@@ -1,0 +1,252 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\ActivityLog;
+use App\Models\Availability;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
+class AvailabilityController extends Controller
+{
+    public function index()
+    {
+        $availabilities = Availability::where('guidance_associate_id', Auth::id())
+            ->with('guidanceAssociate')
+            ->orderBy('available_date', 'desc')
+            ->orderBy('start_time')
+            ->paginate(15);
+
+        return view('guidance.availability', compact('availabilities'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'available_date' => 'required|date|after_or_equal:today',
+            'start_time' => 'required',
+            'end_time' => 'required|after:start_time',
+            'slot_duration' => 'required|integer|min:15|max:120',
+        ]);
+
+        // Check for overlapping availability
+        $overlap = Availability::where('guidance_associate_id', Auth::id())
+            ->where('available_date', $request->available_date)
+            ->where(function ($q) use ($request) {
+                $q->where('start_time', '<', $request->end_time)
+                  ->where('end_time', '>', $request->start_time);
+            })
+            ->exists();
+
+        if ($overlap) {
+            return back()->withErrors(['overlap' => 'This time range overlaps with existing availability.']);
+        }
+
+        DB::transaction(function () use ($request) {
+            $availability = Availability::create([
+                'guidance_associate_id' => Auth::id(),
+                'available_date' => $request->available_date,
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time,
+                'slot_duration' => $request->slot_duration,
+                'status' => 'available',
+            ]);
+
+            ActivityLog::log('CREATE_AVAILABILITY', "Created availability for {$request->available_date} from {$request->start_time} to {$request->end_time}", 'Availability', Auth::id());
+        });
+
+        return redirect()->route('guidance.availability')->with('success', 'Availability added successfully!');
+    }
+
+    public function edit(Availability $availability)
+    {
+        $this->authorizeAvailability($availability);
+        
+        return view('guidance.availability.edit', compact('availability'));
+    }
+
+    public function update(Request $request, Availability $availability)
+    {
+        $this->authorizeAvailability($availability);
+        
+        $request->validate([
+            'available_date' => 'required|date',
+            'start_time' => 'required',
+            'end_time' => 'required|after:start_time',
+            'slot_duration' => 'required|integer|min:15|max:120',
+        ]);
+
+        // Check for overlapping availability (excluding current)
+        $overlap = Availability::where('guidance_associate_id', Auth::id())
+            ->where('id', '!=', $availability->id)
+            ->where('available_date', $request->available_date)
+            ->where(function ($q) use ($request) {
+                $q->where('start_time', '<', $request->end_time)
+                  ->where('end_time', '>', $request->start_time);
+            })
+            ->exists();
+
+        if ($overlap) {
+            return back()->withErrors(['overlap' => 'This time range overlaps with existing availability.']);
+        }
+
+        // If status is booked, don't allow changing date/time
+        if ($availability->status === 'booked') {
+            return back()->withErrors(['error' => 'Cannot modify a booked slot.']);
+        }
+
+        $availability->update([
+            'available_date' => $request->available_date,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'slot_duration' => $request->slot_duration,
+        ]);
+
+        ActivityLog::log('UPDATE_AVAILABILITY', "Updated availability #{$availability->id}", 'Availability', Auth::id());
+
+        return redirect()->route('guidance.availability')->with('success', 'Availability updated successfully!');
+    }
+
+    public function destroy(Availability $availability)
+    {
+        $this->authorizeAvailability($availability);
+        
+        if ($availability->status === 'booked') {
+            return back()->withErrors(['error' => 'Cannot delete a booked slot.']);
+        }
+
+        $availability->delete();
+
+        ActivityLog::log('DELETE_AVAILABILITY', "Deleted availability #{$availability->id}", 'Availability', Auth::id());
+
+        return redirect()->route('guidance.availability')->with('success', 'Availability deleted successfully!');
+    }
+
+    private function authorizeAvailability(Availability $availability)
+    {
+        if ($availability->guidance_associate_id !== Auth::id()) {
+            abort(403, 'Unauthorized access.');
+        }
+    }
+
+    // Admin methods
+    public function adminIndex()
+    {
+        $availabilities = Availability::with('guidanceAssociate')
+            ->orderBy('available_date', 'desc')
+            ->orderBy('start_time')
+            ->paginate(15);
+
+        $guidanceAssociates = User::whereHas('role', function ($q) {
+            $q->where('name', 'guidance_associate');
+        })->get();
+
+        return view('admin.availability', compact('availabilities', 'guidanceAssociates'));
+    }
+
+    public function adminStore(Request $request)
+    {
+        $request->validate([
+            'guidance_associate_id' => 'required|exists:users,id',
+            'available_date' => 'required|date|after_or_equal:today',
+            'start_time' => 'required',
+            'end_time' => 'required|after:start_time',
+            'slot_duration' => 'required|integer|min:15|max:120',
+        ]);
+
+        // Check for overlapping availability
+        $overlap = Availability::where('guidance_associate_id', $request->guidance_associate_id)
+            ->where('available_date', $request->available_date)
+            ->where(function ($q) use ($request) {
+                $q->where('start_time', '<', $request->end_time)
+                  ->where('end_time', '>', $request->start_time);
+            })
+            ->exists();
+
+        if ($overlap) {
+            return back()->withErrors(['overlap' => 'This time range overlaps with existing availability for this guidance associate.']);
+        }
+
+        DB::transaction(function () use ($request) {
+            $availability = Availability::create([
+                'guidance_associate_id' => $request->guidance_associate_id,
+                'available_date' => $request->available_date,
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time,
+                'slot_duration' => $request->slot_duration,
+                'status' => 'available',
+            ]);
+
+            ActivityLog::log('CREATE_AVAILABILITY', "Created availability for {$request->available_date} from {$request->start_time} to {$request->end_time} for guidance associate #{$request->guidance_associate_id}", 'Availability', Auth::id());
+        });
+
+        return redirect()->route('admin.availability')->with('success', 'Availability added successfully!');
+    }
+
+    public function adminEdit(Availability $availability)
+    {
+        $guidanceAssociates = User::whereHas('role', function ($q) {
+            $q->where('name', 'guidance_associate');
+        })->get();
+
+        return view('admin.availability.edit', compact('availability', 'guidanceAssociates'));
+    }
+
+    public function adminUpdate(Request $request, Availability $availability)
+    {
+        $request->validate([
+            'guidance_associate_id' => 'required|exists:users,id',
+            'available_date' => 'required|date',
+            'start_time' => 'required',
+            'end_time' => 'required|after:start_time',
+            'slot_duration' => 'required|integer|min:15|max:120',
+        ]);
+
+        // Check for overlapping availability (excluding current)
+        $overlap = Availability::where('guidance_associate_id', $request->guidance_associate_id)
+            ->where('id', '!=', $availability->id)
+            ->where('available_date', $request->available_date)
+            ->where(function ($q) use ($request) {
+                $q->where('start_time', '<', $request->end_time)
+                  ->where('end_time', '>', $request->start_time);
+            })
+            ->exists();
+
+        if ($overlap) {
+            return back()->withErrors(['overlap' => 'This time range overlaps with existing availability for this guidance associate.']);
+        }
+
+        // If status is booked, don't allow changing date/time
+        if ($availability->status === 'booked') {
+            return back()->withErrors(['error' => 'Cannot modify a booked slot.']);
+        }
+
+        $availability->update([
+            'guidance_associate_id' => $request->guidance_associate_id,
+            'available_date' => $request->available_date,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'slot_duration' => $request->slot_duration,
+        ]);
+
+        ActivityLog::log('UPDATE_AVAILABILITY', "Updated availability #{$availability->id}", 'Availability', Auth::id());
+
+        return redirect()->route('admin.availability')->with('success', 'Availability updated successfully!');
+    }
+
+    public function adminDestroy(Availability $availability)
+    {
+        if ($availability->status === 'booked') {
+            return back()->withErrors(['error' => 'Cannot delete a booked slot.']);
+        }
+
+        $availability->delete();
+
+        ActivityLog::log('DELETE_AVAILABILITY', "Deleted availability #{$availability->id}", 'Availability', Auth::id());
+
+        return redirect()->route('admin.availability')->with('success', 'Availability deleted successfully!');
+    }
+}

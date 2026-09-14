@@ -1,0 +1,293 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Appointment;
+use App\Models\AppointmentStatus;
+use App\Models\ActivityLog;
+use App\Models\Availability;
+use App\Models\Notification;
+use App\Models\RescheduleRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
+class GuidanceAppointmentController extends Controller
+{
+    public function requests()
+    {
+        $pendingStatus = AppointmentStatus::where('name', 'pending')->first();
+        
+        $requests = Appointment::where('appointment_status_id', $pendingStatus->id)
+            ->with(['student', 'status'])
+            ->orderBy('appointment_date')
+            ->orderBy('start_time')
+            ->paginate(15);
+
+        return view('guidance.requests', compact('requests'));
+    }
+
+    public function showRequest(Appointment $appointment)
+    {
+        $this->authorizeGuidance($appointment);
+        
+        $appointment->load(['student', 'status', 'rescheduleRequests']);
+        
+        return view('guidance.requests.show', compact('appointment'));
+    }
+
+    public function approve(Appointment $appointment)
+    {
+        $this->authorizeGuidance($appointment);
+        
+        if (!$appointment->isPending()) {
+            return back()->withErrors(['error' => 'This appointment cannot be approved.']);
+        }
+
+        DB::transaction(function () use ($appointment) {
+            $approvedStatus = AppointmentStatus::where('name', 'approved')->first();
+            
+            $appointment->update([
+                'appointment_status_id' => $approvedStatus->id,
+                'approved_at' => now(),
+            ]);
+
+            // Notify student
+            Notification::create([
+                'user_id' => $appointment->student_id,
+                'title' => 'Appointment Approved',
+                'message' => "Your guidance appointment has been approved for {$appointment->formatted_date} at {$appointment->formatted_time}.",
+                'type' => 'appointment_approved',
+                'related_appointment_id' => $appointment->id,
+            ]);
+
+            ActivityLog::log('APPROVE_APPOINTMENT', "Approved appointment #{$appointment->id} for student {$appointment->student->full_name}", 'Appointments', Auth::id());
+        });
+
+        return redirect()->route('guidance.requests')->with('success', 'Appointment approved successfully!');
+    }
+
+    public function reject(Appointment $appointment)
+    {
+        $this->authorizeGuidance($appointment);
+        
+        if (!$appointment->isPending()) {
+            return back()->withErrors(['error' => 'This appointment cannot be rejected.']);
+        }
+
+        DB::transaction(function () use ($appointment) {
+            $rejectedStatus = AppointmentStatus::where('name', 'rejected')->first();
+            
+            $appointment->update([
+                'appointment_status_id' => $rejectedStatus->id,
+            ]);
+
+            // Notify student
+            Notification::create([
+                'user_id' => $appointment->student_id,
+                'title' => 'Appointment Rejected',
+                'message' => "Your guidance appointment request for {$appointment->formatted_date} at {$appointment->formatted_time} has been rejected.",
+                'type' => 'appointment_rejected',
+                'related_appointment_id' => $appointment->id,
+            ]);
+
+            ActivityLog::log('REJECT_APPOINTMENT', "Rejected appointment #{$appointment->id} for student {$appointment->student->full_name}", 'Appointments', Auth::id());
+        });
+
+        return redirect()->route('guidance.requests')->with('success', 'Appointment rejected.');
+    }
+
+    public function rescheduleForm(Appointment $appointment)
+    {
+        $this->authorizeGuidance($appointment);
+        
+        $availableDates = Availability::where('status', 'available')
+            ->where('available_date', '>=', Carbon::today())
+            ->whereHas('guidanceAssociate', function ($query) {
+                $query->where('status', 'active');
+            })
+            ->select('available_date')
+            ->distinct()
+            ->orderBy('available_date')
+            ->get();
+
+        return view('guidance.appointments.reschedule', compact('appointment', 'availableDates'));
+    }
+
+    public function reschedule(Request $request, Appointment $appointment)
+    {
+        $this->authorizeGuidance($appointment);
+        
+        $request->validate([
+            'availability_id' => 'required|exists:availability,id',
+            'requested_date' => 'required|date|after_or_equal:today',
+            'requested_start_time' => 'required',
+            'requested_end_time' => 'required',
+            'reason' => 'required|string|max:1000',
+        ]);
+
+        $availability = Availability::with('guidanceAssociate')->findOrFail($request->availability_id);
+        
+        DB::transaction(function () use ($request, $appointment, $availability) {
+            $oldDate = $appointment->appointment_date;
+            $oldStart = $appointment->start_time;
+            $oldEnd = $appointment->end_time;
+
+            $appointment->update([
+                'appointment_date' => $request->requested_date,
+                'start_time' => $request->requested_start_time,
+                'end_time' => $request->requested_end_time,
+                'guidance_associate_id' => $availability->guidance_associate_id,
+                'reschedule_reason' => $request->reason,
+            ]);
+
+            // Update any pending reschedule request
+            RescheduleRequest::where('appointment_id', $appointment->id)
+                ->where('status', 'pending')
+                ->update([
+                    'status' => 'approved',
+                    'reviewed_by' => Auth::id(),
+                    'reviewed_at' => now(),
+                ]);
+
+            // Notify student
+            Notification::create([
+                'user_id' => $appointment->student_id,
+                'title' => 'Appointment Rescheduled',
+                'message' => "Your appointment has been rescheduled to {$request->requested_date} at {$request->requested_start_time}.",
+                'type' => 'appointment_rescheduled',
+                'related_appointment_id' => $appointment->id,
+            ]);
+
+            ActivityLog::log('RESCHEDULE_APPOINTMENT', "Rescheduled appointment #{$appointment->id} from {$oldDate} to {$request->requested_date}", 'Appointments', Auth::id());
+        });
+
+        return redirect()->route('guidance.requests')->with('success', 'Appointment rescheduled successfully!');
+    }
+
+    public function cancel(Appointment $appointment)
+    {
+        $this->authorizeGuidance($appointment);
+        
+        $request->validate([
+            'cancellation_reason' => 'required|string|max:1000',
+        ]);
+
+        if (!$appointment->canBeCancelled()) {
+            return back()->withErrors(['error' => 'This appointment cannot be cancelled.']);
+        }
+
+        DB::transaction(function () use ($appointment, $request) {
+            $cancelledStatus = AppointmentStatus::where('name', 'cancelled')->first();
+            
+            $appointment->update([
+                'appointment_status_id' => $cancelledStatus->id,
+                'cancellation_reason' => $request->cancellation_reason,
+                'cancelled_at' => now(),
+            ]);
+
+            // Notify student
+            Notification::create([
+                'user_id' => $appointment->student_id,
+                'title' => 'Appointment Cancelled',
+                'message' => "Your appointment has been cancelled by the guidance associate.",
+                'type' => 'appointment_cancelled',
+                'related_appointment_id' => $appointment->id,
+            ]);
+
+            ActivityLog::log('CANCEL_APPOINTMENT', "Cancelled appointment #{$appointment->id} for student {$appointment->student->full_name}", 'Appointments', Auth::id());
+        });
+
+        return redirect()->route('guidance.requests')->with('success', 'Appointment cancelled successfully.');
+    }
+
+    public function complete(Appointment $appointment)
+    {
+        $this->authorizeGuidance($appointment);
+        
+        if (!$appointment->isApproved()) {
+            return back()->withErrors(['error' => 'Only approved appointments can be marked as completed.']);
+        }
+
+        DB::transaction(function () use ($appointment) {
+            $completedStatus = AppointmentStatus::where('name', 'completed')->first();
+            
+            $appointment->update([
+                'appointment_status_id' => $completedStatus->id,
+                'completed_at' => now(),
+            ]);
+
+            // Notify student
+            Notification::create([
+                'user_id' => $appointment->student_id,
+                'title' => 'Appointment Completed',
+                'message' => "Your guidance appointment has been marked as completed. Please provide feedback.",
+                'type' => 'feedback',
+                'related_appointment_id' => $appointment->id,
+            ]);
+
+            ActivityLog::log('COMPLETE_APPOINTMENT', "Completed appointment #{$appointment->id} for student {$appointment->student->full_name}", 'Appointments', Auth::id());
+        });
+
+        return redirect()->route('guidance.appointments')->with('success', 'Appointment marked as completed!');
+    }
+
+    public function sendReminder(Appointment $appointment)
+    {
+        $this->authorizeGuidance($appointment);
+        
+        Notification::create([
+            'user_id' => $appointment->student_id,
+            'title' => 'Appointment Reminder',
+            'message' => "Reminder: You have a guidance appointment scheduled for {$appointment->formatted_date} at {$appointment->formatted_time}.",
+            'type' => 'appointment_reminder',
+            'related_appointment_id' => $appointment->id,
+        ]);
+
+        ActivityLog::log('SEND_REMINDER', "Sent reminder for appointment #{$appointment->id}", 'Appointments', Auth::id());
+
+        return back()->with('success', 'Reminder sent to student!');
+    }
+
+    public function appointments()
+    {
+        $appointments = Appointment::whereHas('status', function ($q) {
+                $q->whereIn('name', ['approved', 'completed']);
+            })
+            ->with(['student', 'status'])
+            ->orderBy('appointment_date', 'desc')
+            ->orderBy('start_time', 'desc')
+            ->paginate(15);
+
+        return view('guidance.appointments', compact('appointments'));
+    }
+
+    public function show(Appointment $appointment)
+    {
+        $this->authorizeGuidance($appointment);
+        
+        $appointment->load(['student', 'status', 'feedback']);
+        
+        return view('guidance.appointments.show', compact('appointment'));
+    }
+
+    public function history()
+    {
+        $appointments = Appointment::with(['student', 'status'])
+            ->orderBy('appointment_date', 'desc')
+            ->orderBy('start_time', 'desc')
+            ->paginate(20);
+
+        return view('guidance.history', compact('appointments'));
+    }
+
+    private function authorizeGuidance(Appointment $appointment)
+    {
+        // Allow all guidance associates to manage all appointments
+        if (!Auth::user()->isGuidanceAssociate()) {
+            abort(403, 'Unauthorized access.');
+        }
+    }
+}
