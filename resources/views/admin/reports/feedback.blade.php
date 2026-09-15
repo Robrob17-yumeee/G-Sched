@@ -91,7 +91,7 @@
                                     <td>
                                         @if($fb->rating)
                                             @for($i = 1; $i <= 5; $i++)
-                                                <i class="bi bi-star{{ $i <= $fb->rating ? '-fill' : ''}}" style="{{ $i <= $fb->rating ? 'color: #F7AD19;' : 'color: #94A3B8; opacity: 0.4;' }}"></i>
+                                                <i class="bi bi-star{{ $i <= $fb->rating ? '-fill' : ''}}" style="{{ $i <= $fb->rating ? 'color: #F7AD19;' : 'color: var(--navy); opacity: 0.4;' }}"></i>
                                             @endfor
                                         @else
                                             <span class="badge" style="background: #429EBD; color: var(--navy);">SQD Response</span>

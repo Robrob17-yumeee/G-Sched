@@ -22,7 +22,7 @@
     <div class="col-md-6 col-lg-4">
         <a href="{{ route('admin.reports.students') }}" class="card shadow-sm text-decoration-none h-100">
             <div class="card-body text-center p-4">
-                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background: rgba(159, 231, 245, 0.15); color: var(--light-blue);">
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background: rgba(159, 231, 245, 0.15); color: #429EBD;">
                     <i class="bi bi-mortarboard fs-1"></i>
                 </div>
                 <h5>Student Report</h5>
@@ -33,7 +33,7 @@
     <div class="col-md-6 col-lg-4">
         <a href="{{ route('admin.reports.guidance-associates') }}" class="card shadow-sm text-decoration-none h-100">
             <div class="card-body text-center p-4">
-                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background: rgba(159, 231, 245, 0.15); color: var(--light-blue);">
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background: rgba(159, 231, 245, 0.15); color: #429EBD;">
                     <i class="bi bi-person-badge fs-1"></i>
                 </div>
                 <h5>Guidance Associate Report</h5>
@@ -77,7 +77,7 @@
     <div class="col-md-6 col-lg-4">
         <a href="{{ route('admin.reports.feedback') }}" class="card shadow-sm text-decoration-none h-100">
             <div class="card-body text-center p-4">
-                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background: rgba(159, 231, 245, 0.15); color: var(--light-blue);">
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background: rgba(159, 231, 245, 0.15); color: #429EBD;">
                     <i class="bi bi-star fs-1"></i>
                 </div>
                 <h5>Feedback Report</h5>

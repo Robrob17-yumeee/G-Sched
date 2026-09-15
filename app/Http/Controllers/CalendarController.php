@@ -13,7 +13,79 @@ class CalendarController extends Controller
 {
     public function index()
     {
-        return view('guidance.calendar');
+        $user = Auth::user();
+
+        $availabilities = Availability::where('guidance_associate_id', $user->id)
+            ->where('available_date', '>=', Carbon::today())
+            ->orderBy('available_date')
+            ->get()
+            ->groupBy('available_date');
+
+        $appointments = Appointment::where('guidance_associate_id', $user->id)
+            ->where('appointment_date', '>=', Carbon::today())
+            ->with(['student', 'status'])
+            ->orderBy('appointment_date')
+            ->get()
+            ->groupBy('appointment_date');
+
+        $availableDatesMap = [];
+        foreach ($availabilities as $date => $days) {
+            $dateStr = Carbon::parse($date)->format('Y-m-d');
+            $slotCount = 0;
+            $availabilityData = [];
+
+            foreach ($days as $availability) {
+                $start = Carbon::parse($dateStr . ' ' . $availability->start_time->format('H:i'));
+                $end = Carbon::parse($dateStr . ' ' . $availability->end_time->format('H:i'));
+                $duration = $availability->slot_duration;
+
+                $slotEnd = $start->copy()->addMinutes($duration);
+                if ($slotEnd <= $end) {
+                    $isBooked = Appointment::where('guidance_associate_id', $availability->guidance_associate_id)
+                        ->where('appointment_date', $date)
+                        ->where('start_time', $start->format('H:i'))
+                        ->where('end_time', $slotEnd->format('H:i'))
+                        ->whereHas('status', function ($q) {
+                            $q->whereIn('name', ['pending', 'approved']);
+                        })
+                        ->exists();
+
+                    if (!$isBooked) {
+                        $slotCount++;
+                        $availabilityData[] = [
+                            'availability_id' => $availability->id,
+                            'start_time' => $start->format('H:i'),
+                            'end_time' => $slotEnd->format('H:i'),
+                            'formatted_time' => $start->format('g:i A') . ' - ' . $slotEnd->format('g:i A'),
+                        ];
+                    }
+                }
+            }
+
+            $availableDatesMap[$dateStr] = [
+                'slotCount' => $slotCount,
+                'availabilityData' => $availabilityData,
+            ];
+        }
+
+        $appointmentsMap = [];
+        foreach ($appointments as $date => $apps) {
+            $dateStr = Carbon::parse($date)->format('Y-m-d');
+            $appointmentsMap[$dateStr] = [];
+            foreach ($apps as $appt) {
+                $appointmentsMap[$dateStr][] = [
+                    'id' => $appt->id,
+                    'student_name' => $appt->student ? $appt->student->full_name : 'Unknown',
+                    'time' => $appt->start_time->format('g:i A') . ' - ' . $appt->end_time->format('g:i A'),
+                    'status' => $appt->status->name ?? '',
+                    'status_label' => $appt->status->label ?? '',
+                    'purpose' => $appt->purpose,
+                    'notes' => $appt->notes,
+                ];
+            }
+        }
+
+        return view('guidance.calendar', compact('availableDatesMap', 'appointmentsMap'));
     }
 
     public function events(Request $request)

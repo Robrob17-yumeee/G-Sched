@@ -71,12 +71,12 @@
         letter-spacing: 0.025em;
     }
     
-    .type-badge.appointment_request { background: rgba(66, 158, 189, 0.15); color: var(--navy); }
-    .type-badge.appointment_approved { background: rgba(159, 231, 245, 0.15); color: var(--navy); }
+    .type-badge.appointment_request { background: #274be8; color: #FFFFFF; }
+    .type-badge.appointment_approved { background: #21db3d; color: #FFFFFF; }
     .type-badge.appointment_rejected { background: rgba(242, 127, 12, 0.15); color: var(--navy); }
-    .type-badge.appointment_cancelled { background: rgba(242, 127, 12, 0.15); color: var(--navy); }
+    .type-badge.appointment_cancelled { background: #db213a; color: #FFFFFF; }
     .type-badge.appointment_rescheduled { background: rgba(5, 63, 92, 0.15); color: var(--navy); }
-    .type-badge.feedback { background: rgba(247, 173, 25, 0.15); color: var(--navy); }
+    .type-badge.feedback { background: #ffbf00; color: #FFFFFF; }
     .type-badge.appointment_request_high { background: rgba(242, 127, 12, 0.15); color: var(--navy); }
     
     .btn-outline-custom {
@@ -103,12 +103,7 @@
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(5, 63, 92, 0.08);
     }
-    
-    .kpi-card.notifications {
-        background: linear-gradient(135deg, rgba(159, 231, 245, 0.25) 0%, rgba(159, 231, 245, 0.1) 100%);
-        border-left: 4px solid var(--light-blue);
-    }
-    
+
     .kpi-icon {
         width: 48px;
         height: 48px;
@@ -118,7 +113,7 @@
         justify-content: center;
     }
     
-    .kpi-icon.notifications { background: rgba(159, 231, 245, 0.2); color: var(--navy); }
+    .kpi-icon.notifications { background: rgba(159, 231, 245, 0.25); color: #429EBD; }
     
     .btn-icon {
         width: 36px;
@@ -180,15 +175,6 @@
                             </button>
                         </form>
                     @endif
-                    <div class="kpi-card notifications d-flex align-items-center gap-3" style="min-width: 200px;">
-                        <div class="kpi-icon notifications">
-                            <i class="bi bi-bell-fill fs-3"></i>
-                        </div>
-                        <div>
-                            <p class="text-muted mb-0 text-uppercase small" style="letter-spacing: 0.05em;">Unread</p>
-                            <h5 class="mb-0" style="color: var(--navy); font-weight: 700;">{{ auth()->user()->unreadNotificationsCount() }}</h5>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -204,16 +190,16 @@
                                 <i class="bi {{ $notification->icon }} fs-5"></i>
                             </div>
                         </div>
-                        <div class="flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <h6 class="notification-title mb-1">{{ $notification->title }}</h6>
-                                <small class="notification-time">{{ $notification->created_at->diffForHumans() }}</small>
+<div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <h6 class="notification-title mb-1">{{ $notification->title }}</h6>
+                                </div>
+                                <p class="notification-message mb-0">{{ $notification->message }}</p>
                             </div>
-                            <p class="notification-message mb-0">{{ $notification->message }}</p>
-                        </div>
-                        <div class="d-flex flex-column gap-2 align-items-end">
-                            <span class="type-badge {{ $notification->type }}">{{ ucfirst($notification->type) }}</span>
-                            @if(!$notification->is_read)
+                            <div class="d-flex flex-column gap-2 align-items-end">
+                                <small class="notification-time">{{ $notification->created_at->diffForHumans() }}</small>
+                                <span class="type-badge {{ $notification->type }}">{{ ucfirst($notification->type) }}</span>
+                                @if(!$notification->is_read)
                                 <form method="POST" action="{{ route('student.notifications.read', $notification) }}" class="d-inline">
                                     @csrf
                                     <button type="submit" class="btn-icon success" title="Mark as read">

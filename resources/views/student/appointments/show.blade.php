@@ -154,7 +154,7 @@
                 <div class="card-body">
                     <div class="mb-3">
                         @for($i = 1; $i <= 5; $i++)
-                            <i class="bi bi-star{{ $i <= $appointment->feedback->rating ? '-fill' : ''}}" style="{{ $i <= $appointment->feedback->rating ? 'color: #F7AD19;' : 'color: #94A3B8; opacity: 0.4;' }}" fs-4"></i>
+                            <i class="bi bi-star{{ $i <= $appointment->feedback->rating ? '-fill' : ''}}" style="{{ $i <= $appointment->feedback->rating ? 'color: #F7AD19;' : 'color: var(--navy); opacity: 0.4;' }}" fs-4"></i>
                         @endfor
                     </div>
                     <p>{{ $appointment->feedback->comments }}</p>

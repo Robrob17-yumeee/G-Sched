@@ -44,20 +44,26 @@
         border-radius: 0.5rem;
         color: #FFFFFF;
         font-weight: 500;
-        padding: 0.5rem 1rem;
+        padding: 0.625rem 1.25rem;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
         text-decoration: none;
         transition: all 0.2s ease;
+        min-height: 44px;
+    }
+    
+    .btn-book-appointment i {
+        color: #FFFFFF;
+        font-size: 1.1rem;
     }
     
     .btn-book-appointment:hover {
-        background: #2b7a8c;
+        background: var(--navy);
     }
     
     .btn-book-appointment:focus {
-        background: #2b7a8c;
+        background: var(--navy);
         box-shadow: 0 0 0 3px rgba(66, 158, 189, 0.3);
     }
     
@@ -95,7 +101,9 @@
     
     .kpi-col {
         display: flex;
-        align-items: stretch;
+        align-items: flex-start;
+        align-self: flex-start;
+        height: fit-content;
     }
     
     .kpi-card .kpi-count {
@@ -103,6 +111,11 @@
         font-weight: 700;
     }
     
+    .kpi-card.pending,
+    .kpi-card.approved {
+        min-height: 100px;
+    }
+
     .kpi-card.pending {
         background: linear-gradient(135deg, rgba(247, 173, 25, 0.1) 0%, rgba(247, 173, 25, 0.05) 100%);
         border-left: 4px solid var(--yellow);
@@ -113,18 +126,13 @@
         border-left: 4px solid var(--medium-blue);
     }
     
-    .kpi-card.notifications {
-        background: linear-gradient(135deg, rgba(159, 231, 245, 0.2) 0%, rgba(159, 231, 245, 0.1) 100%);
-        border-left: 4px solid var(--light-blue);
-    }
-    
     .kpi-card.appointments {
         background: linear-gradient(135deg, rgba(66, 158, 189, 0.1) 0%, rgba(66, 158, 189, 0.05) 100%);
         border-left: 4px solid var(--medium-blue);
     }
     
     .kpi-icon.appointments {
-         background: rgba(247, 173, 25, 0.15);
+         background: rgba(66, 158, 189, 0.15);
          color: var(--navy);
     }
     @media (max-width: 767.98px) {
@@ -181,9 +189,9 @@
         justify-content: center;
     }
     
-    .kpi-icon.pending { background: rgba(247, 173, 25, 0.15); color: var(--navy); }
-    .kpi-icon.approved { background: rgba(66, 158, 189, 0.15); color: var(--navy); }
-    .kpi-icon.notifications { background: rgba(159, 231, 240, 0.2); color: var(--navy); }
+    .kpi-icon.pending { background: rgba(247, 173, 25, 0.2); color: #F7AD19; }
+    .kpi-icon.approved { background: rgba(66, 158, 189, 0.2); color: #429EBD; }
+    .kpi-icon.appointments { background: rgba(66, 158, 189, 0.2); color: #429EBD; }
     
     .status-badge {
         padding: 0.375rem 0.875rem;
@@ -213,10 +221,9 @@
         color: #FFFFFF;
     }
     
-    .action-btn {
-        border: 1px solid var(--border-color);
+     .action-btn {
         border-radius: 0.75rem;
-        padding: 1rem 0.875rem;
+        padding: 0.6rem 0.875rem;
         text-align: center;
         text-decoration: none;
         transition: all 0.2s ease;
@@ -224,33 +231,58 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
     }
     
     .action-btn:hover {
         border-color: var(--medium-blue);
-        background: rgba(66, 158, 189, 0.1);
+        background: rgba(66, 158, 189, 0.05);
+        transform: translateY(-2px);
         text-decoration: none;
     }
     
-    .quick-action-icon {
-        font-size: 2rem;
+     .quick-action-icon {
+        font-size: 1.75rem;
         display: block;
         margin-bottom: 0.25rem;
+        width: 48px;
+        height: 48px;
+        border-radius: 0.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .action-btn.info .quick-action-icon {
+        background: rgba(66, 158, 189, 0.15);
+    }
+    
+    .action-btn.warning .quick-action-icon {
+        background: rgba(247, 173, 25, 0.2);
+    }
+    
+    .action-btn.success .quick-action-icon {
+        background: rgba(159, 231, 245, 0.25);
+    }
+    
+    .action-btn.secondary .quick-action-icon {
+        background: rgba(5, 63, 92, 0.1);
     }
     
     .action-btn.warning:hover {
         border-color: var(--yellow);
-        background: rgba(247, 173, 25, 0.1);
+        background: rgba(247, 173, 25, 0.05);
     }
     
     .action-btn.info:hover {
         border-color: var(--medium-blue);
-        background: rgba(66, 158, 189, 0.1);
+        background: rgba(66, 158, 189, 0.05);
     }
     
     .action-btn.secondary:hover {
         border-color: var(--navy);
-        background: rgba(5, 63, 92, 0.08);
+        background: rgba(5, 63, 92, 0.05);
     }
     
     .notification-item {
@@ -294,6 +326,22 @@
         padding: 0.25rem 0.5rem;
         text-align: center;
     }
+    
+    .type-badge {
+        padding: 0.25rem 0.625rem;
+        border-radius: 9999px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+    }
+    
+    .type-badge.appointment_request { background: #274be8; color: #FFFFFF; }
+    .type-badge.appointment_approved { background: #21db3d; color: #FFFFFF; }
+    .type-badge.appointment_rejected { background: #db213a; color: #FFFFFF; }
+    .type-badge.appointment_cancelled { background: #db213a; color: #FFFFFF; }
+    .type-badge.appointment_rescheduled { background: rgba(5, 63, 92, 0.15); color: var(--navy); }
+    .type-badge.feedback { background: #ffbf00; color: #FFFFFF; }
 </style>
 @endsection
 
@@ -328,190 +376,189 @@
     </a>
 </div>
 
-<!-- KPI Summary Cards -->
-<div class="row g-3 kpi-row">
-        <!-- Pending Requests -->
-        <div class="col-12 col-md-6 col-lg-3 kpi-col">
-            <a href="{{ route('student.appointments.index') }}" class="kpi-link">
-                <div class="card kpi-card pending kpi-count-card h-100">
-                    <div class="d-flex justify-content-between align-items-center h-100">
-                        <div>
-                            <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Pending Requests</p>
-                            <h2 class="kpi-count mb-0" style="color: var(--navy);">{{ $pendingCount }}</h2>
-                        </div>
-                        <div class="kpi-icon pending">
-                            <i class="bi bi-hourglass-split fs-4"></i>
+<!-- Dashboard Layout -->
+<div class="row g-3">
+    <!-- Left Column: KPI Cards + Next Appointment -->
+    <div class="col-12 col-lg-7">
+        <div class="row g-3 mb-3">
+            <!-- Pending Requests -->
+            <div class="col-12 col-md-6">
+                <a href="{{ route('student.appointments.index') }}" class="kpi-link d-block h-100">
+                    <div class="card kpi-card pending kpi-count-card h-100">
+                        <div class="d-flex justify-content-between align-items-center h-100">
+                            <div>
+                                <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Pending Requests</p>
+                                <h2 class="kpi-count mb-0" style="color: var(--navy);">{{ $pendingCount }}</h2>
+                            </div>
+                            <div class="kpi-icon pending">
+                                <i class="bi bi-hourglass-split fs-4"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
+
+            <!-- Approved Appointments -->
+            <div class="col-12 col-md-6">
+                <a href="{{ route('student.appointments.index') }}" class="kpi-link d-block h-100">
+                    <div class="card kpi-card approved kpi-count-card h-100">
+                        <div class="d-flex justify-content-between align-items-center h-100">
+                            <div>
+                                <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Approved Appointments</p>
+                                <h2 class="kpi-count mb-0" style="color: var(--navy);">{{ $approvedCount }}</h2>
+                            </div>
+                            <div class="kpi-icon approved">
+                                <i class="bi bi-check-circle-fill fs-4"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
-        
-        <div class="col-12 col-md-6 col-lg-3 kpi-col">
-            <a href="{{ route('student.appointments.index') }}" class="kpi-link">
-                <div class="card kpi-card approved kpi-count-card h-100">
-                    <div class="d-flex justify-content-between align-items-center h-100">
-                        <div>
-                            <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Approved Appointments</p>
-                            <h2 class="kpi-count mb-0" style="color: var(--navy);">{{ $approvedCount }}</h2>
-                        </div>
-                        <div class="kpi-icon approved">
-                            <i class="bi bi-check-circle-fill fs-4"></i>
-                        </div>
-                    </div>
-                </div>
-            </a>
+
+        <!-- Next Appointment Card -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                    <i class="bi bi-calendar-event me-2" style="color: var(--medium-blue);"></i>Next Appointment
+                </h5>
+            </div>
+            <div class="card-body">
+                @if($nextAppointment)
+                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+                         <div class="d-flex align-items-center gap-3">
+                              <div class="bg-light bg-opacity-10 p-3 rounded-xl" style="background: rgba(159, 231, 245, 0.15) !important;">
+                                 <i class="bi bi-calendar-check fs-1" style="color: var(--medium-blue);"></i>
+                              </div>
+                              <div>
+                                  <h5 class="mb-1" style="color: var(--navy); font-weight: 600;">{{ $nextAppointment->formatted_date }}</h5>
+                                  <p class="mb-1 text-muted">{{ $nextAppointment->formatted_time }}</p>
+                                  <p class="mb-1"><strong style="color: var(--navy);">{{ $nextAppointment->guidanceAssociate->full_name }}</strong></p>
+                                  @if($nextAppointment->purpose)
+                                      <p class="mb-1 small text-muted"><i class="bi bi-chat-text me-1"></i>{{ Str::limit($nextAppointment->purpose, 100) }}</p>
+                                  @endif
+                              </div>
+                         </div>
+                         <div class="d-flex flex-column align-items-center gap-2" style="min-width: 140px;">
+                             <span class="status-badge approved">{{ $nextAppointment->status->label }}</span>
+                             <a href="{{ route('student.appointments.show', $nextAppointment) }}" class="btn-outline-custom">
+                                 <i class="bi bi-eye me-1"></i>View Details
+                             </a>
+                         </div>
+                     </div>
+                 @else
+                     <div class="text-center py-5">
+                        <i class="bi bi-calendar-x fs-1" style="color: var(--text-muted); opacity: 0.5;"></i>
+                        <p class="text-muted mt-3" style="color: var(--text-muted);">No upcoming appointments</p>
+                         <a href="{{ route('student.schedules') }}" class="btn-book-appointment">
+                             <i class="bi bi-plus-circle"></i>Book an Appointment
+                         </a>
+                     </div>
+                 @endif
+            </div>
         </div>
-        
-        <div class="col-12 col-md-6 col-lg-3 kpi-col">
-            <a href="{{ route('student.notifications') }}" class="kpi-link">
-                <div class="card kpi-card notifications kpi-count-card h-100">
-                    <div class="d-flex justify-content-between align-items-center h-100">
-                        <div>
-                            <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Unread Notifications</p>
-                            <h2 class="kpi-count mb-0" style="color: var(--navy);">{{ auth()->user()->unreadNotificationsCount() }}</h2>
-                        </div>
-                        <div class="kpi-icon notifications">
-                            <i class="bi bi-bell-fill fs-4"></i>
-                        </div>
+
+        <!-- Recent Notifications Card -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                    <i class="bi bi-bell me-2" style="color: var(--orange);"></i>Recent Notifications
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                @if($notifications->count() > 0)
+                    @foreach($notifications as $notification)
+                        <a href="{{ route('notifications.show', $notification) }}" class="notification-item d-flex gap-3 text-decoration-none {{ !$notification->is_read ? 'bg-light' : '' }}" style="{{ !$notification->is_read ? 'background: rgba(242, 127, 12, 0.08);' : '' }}">
+                            <div class="flex-shrink-0">
+                                <div class="kpi-icon notifications" style="width: 40px; height: 40px;">
+                                    <i class="bi {{ $notification->icon }} fs-5"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="notification-title mb-1 {{ !$notification->is_read ? 'fw-bold' : '' }}">{{ $notification->title }}</h6>
+                                        <p class="notification-message mb-0">{{ Str::limit($notification->message, 100) }}</p>
+                                    </div>
+                                    <small class="notification-time flex-nowrap">{{ $notification->created_at->diffForHumans() }}</small>
+                                </div>
+                                <small class="type-badge {{ $notification->type }}">{{ ucfirst($notification->type) }}</small>
+                            </div>
+                            <div class="d-flex flex-row align-items-center gap-2 ms-3">
+                                @if(!$notification->is_read)
+                                    <form method="POST" action="{{ route('student.notifications.read', $notification) }}" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="bi bi-check me-1"></i>Mark Read</button>
+                                    </form>
+                                @endif
+                            </div>
+                        </a>
+                    @endforeach
+                    <div class="text-center p-3 border-top" style="border-color: #F1F5F9;">
+                        <a href="{{ route('student.notifications') }}" class="btn btn-sm" style="color: var(--medium-blue); font-weight: 500; padding: 0.5rem 1rem;">
+                            View All <i class="bi bi-chevron-right ms-1"></i>
+                        </a>
                     </div>
-                </div>
-            </a>
+                @else
+                    <div class="text-center py-5">
+                        <i class="bi bi-bell-slash fs-1" style="color: var(--text-muted); opacity: 0.5;"></i>
+                        <p class="text-muted mt-3">No notifications</p>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 
-    <!-- Main Content Widgets -->
-    <div class="row g-3 mt-0">
-        <div class="col-12 col-lg-7">
-            <!-- Next Appointment Card -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
-                        <i class="bi bi-calendar-event me-2" style="color: var(--medium-blue);"></i>Next Appointment
-                    </h5>
-                </div>
-                <div class="card-body">
-                    @if($nextAppointment)
-                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
-                             <div class="d-flex align-items-center gap-3">
-                                  <div class="bg-light bg-opacity-10 p-3 rounded-xl" style="background: rgba(159, 231, 245, 0.15) !important;">
-                                     <i class="bi bi-calendar-check fs-1" style="color: var(--medium-blue);"></i>
-                                 </div>
-                                 <div>
-                                     <h5 class="mb-1" style="color: var(--navy); font-weight: 600;">{{ $nextAppointment->formatted_date }}</h5>
-                                     <p class="mb-1 text-muted">{{ $nextAppointment->formatted_time }}</p>
-                                     <p class="mb-1"><strong style="color: var(--navy);">{{ $nextAppointment->guidanceAssociate->full_name }}</strong></p>
-                                     @if($nextAppointment->purpose)
-                                         <p class="mb-1 small text-muted"><i class="bi bi-chat-text me-1"></i>{{ Str::limit($nextAppointment->purpose, 100) }}</p>
-                                     @endif
-                                 </div>
-                             </div>
-                             <div class="d-flex flex-column align-items-center gap-2" style="min-width: 140px;">
-                                 <span class="status-badge approved">{{ $nextAppointment->status->label }}</span>
-                                 <a href="{{ route('student.appointments.show', $nextAppointment) }}" class="btn-outline-custom">
-                                     <i class="bi bi-eye me-1"></i>View Details
-                                 </a>
-                             </div>
-                         </div>
-                     @else
-                         <div class="text-center py-5">
-                            <i class="bi bi-calendar-x fs-1" style="color: var(--text-muted); opacity: 0.5;"></i>
-                            <p class="text-muted mt-3" style="color: var(--text-muted);">No upcoming appointments</p>
-                             <a href="{{ route('student.schedules') }}" class="btn-book-appointment">
-                                 <i class="bi bi-plus-circle"></i>Book an Appointment
-                             </a>
-                         </div>
-                    @endif
-                </div>
+     <!-- Right Column: Quick Actions -->
+    <div class="col-12 col-lg-5 d-flex">
+        <!-- Quick Actions Card -->
+        <div class="card align-self-start">
+            <div class="card-header bg-white p-2">
+                <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                    <i class="bi bi-lightning me-2" style="color: var(--yellow);"></i>Quick Actions
+                </h5>
             </div>
-            
-            <!-- Recent Notifications Card -->
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
-                        <i class="bi bi-bell me-2" style="color: var(--orange);"></i>Recent Notifications
-                    </h5>
-                </div>
-                <div class="card-body p-0">
-                    @if($notifications->count() > 0)
-                        @foreach($notifications as $notification)
-                            <a href="{{ route('notifications.show', $notification) }}" class="notification-item d-flex gap-3 text-decoration-none {{ !$notification->is_read ? 'fw-bold bg-light' : '' }}">
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <h6 class="notification-title mb-1">{{ $notification->title }}</h6>
-                                        <small class="notification-time">{{ $notification->created_at->diffForHumans() }}</small>
-                                    </div>
-                                    <p class="notification-message mb-0">{{ $notification->message }}</p>
-                                </div>
-                                @if(!$notification->is_read)
-                                    <span class="notification-badge align-self-start">New</span>
-                                @endif
-                            </a>
-                        @endforeach
-                        <div class="text-center p-3 border-top" style="border-color: #F1F5F9;">
-                            <a href="{{ route('student.notifications') }}" class="btn btn-sm" style="color: var(--medium-blue); font-weight: 500; padding: 0.5rem 1rem;">
-                                View All <i class="bi bi-chevron-right ms-1"></i>
-                            </a>
-                        </div>
-                    @else
-                        <div class="text-center py-5">
-                            <i class="bi bi-bell-slash fs-1" style="color: var(--text-muted); opacity: 0.5;"></i>
-                            <p class="text-muted mt-3">No notifications</p>
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-12 col-lg-5 d-none d-lg-block">
-            <!-- Quick Actions Card -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
-                        <i class="bi bi-lightning me-2" style="color: var(--yellow);"></i>Quick Actions
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-12 col-sm-6">
-                            <a href="{{ route('student.schedules') }}" class="action-btn info d-block h-100">
-                                <i class="bi bi-calendar-week quick-action-icon" style="color: var(--medium-blue);"></i>
-                                <span class="fw-medium d-block" style="color: var(--navy);">Available Schedules</span>
-                            </a>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <a href="{{ route('student.appointments.index') }}" class="action-btn info d-block h-100">
-                                <i class="bi bi-calendar-check quick-action-icon" style="color: var(--medium-blue);"></i>
-                                <span class="fw-medium d-block" style="color: var(--navy);">My Appointments</span>
-                            </a>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <a href="{{ route('student.schedules') }}" class="action-btn info d-block h-100">
-                                <i class="bi bi-plus-circle quick-action-icon" style="color: var(--medium-blue);"></i>
-                                <span class="fw-medium d-block" style="color: var(--navy);">Book Appointment</span>
-                            </a>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <a href="{{ route('student.notifications') }}" class="action-btn warning d-block h-100">
-                                <i class="bi bi-bell quick-action-icon" style="color: var(--yellow);"></i>
-                                <span class="fw-medium d-block" style="color: var(--navy);">Notifications</span>
-                            </a>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <a href="{{ route('student.feedback.index') }}" class="action-btn info d-block h-100">
-                                <i class="bi bi-chat-text quick-action-icon" style="color: var(--medium-blue);"></i>
-                                <span class="fw-medium d-block" style="color: var(--navy);">Feedback</span>
-                            </a>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <a href="{{ route('profile') }}" class="action-btn secondary d-block h-100">
-                                <i class="bi bi-person quick-action-icon" style="color: var(--navy);"></i>
-                                <span class="fw-medium d-block" style="color: var(--navy);">Profile</span>
-                            </a>
-                        </div>
+            <div class="card-body p-2">
+                <div class="row g-2">
+                    <div class="col-12 col-sm-6">
+                        <a href="{{ route('student.schedules') }}" class="action-btn info d-block h-100">
+                            <i class="bi bi-calendar-week quick-action-icon" style="color: #429EBD;"></i>
+                            <span class="fw-medium d-block" style="color: var(--navy);">Available Schedules</span>
+                        </a>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <a href="{{ route('student.appointments.index') }}" class="action-btn info d-block h-100">
+                            <i class="bi bi-calendar-check quick-action-icon" style="color: #429EBD;"></i>
+                            <span class="fw-medium d-block" style="color: var(--navy);">My Appointments</span>
+                        </a>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <a href="{{ route('student.schedules') }}" class="action-btn info d-block h-100">
+                            <i class="bi bi-plus-circle quick-action-icon" style="color: #429EBD;"></i>
+                            <span class="fw-medium d-block" style="color: var(--navy);">Book Appointment</span>
+                        </a>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <a href="{{ route('student.notifications') }}" class="action-btn warning d-block h-100">
+                            <i class="bi bi-bell quick-action-icon" style="color: #F7AD19;"></i>
+                            <span class="fw-medium d-block" style="color: var(--navy);">Notifications</span>
+                        </a>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <a href="{{ route('student.feedback.index') }}" class="action-btn info d-block h-100">
+                            <i class="bi bi-chat-text quick-action-icon" style="color: #429EBD;"></i>
+                            <span class="fw-medium d-block" style="color: var(--navy);">Feedback</span>
+                        </a>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <a href="{{ route('profile') }}" class="action-btn secondary d-block h-100">
+                            <i class="bi bi-person quick-action-icon" style="color: #053F5C;"></i>
+                            <span class="fw-medium d-block" style="color: var(--navy);">Profile</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 @endsection

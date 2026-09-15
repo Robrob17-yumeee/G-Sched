@@ -109,10 +109,10 @@
         justify-content: center;
     }
     
-    .kpi-icon.pending { background: rgba(247, 173, 25, 0.15); color: var(--navy); }
-    .kpi-icon.today { background: rgba(66, 158, 189, 0.15); color: var(--navy); }
-    .kpi-icon.completed { background: rgba(159, 231, 245, 0.2); color: var(--navy); }
-    .kpi-icon.slots { background: rgba(159, 231, 240, 0.25); color: var(--navy); }
+    .kpi-icon.pending { background: rgba(247, 173, 25, 0.2); color: #F7AD19; }
+    .kpi-icon.today { background: rgba(66, 158, 189, 0.2); color: #429EBD; }
+    .kpi-icon.completed { background: rgba(159, 231, 245, 0.25); color: #429EBD; }
+    .kpi-icon.slots { background: rgba(159, 231, 245, 0.2); color: #429EBD; }
     
     .status-badge {
         padding: 0.375rem 0.875rem;
@@ -189,6 +189,49 @@
         text-align: center;
     }
     
+    .action-btn.primary-inverted {
+        background: #FFFFFF;
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        color: #429EBD;
+        padding: 1rem 0.875rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(5, 63, 92, 0.08);
+    }
+    .action-btn.primary-inverted:hover {
+        border-color: var(--medium-blue);
+        background: rgba(66, 158, 189, 0.05);
+        color: #429EBD;
+    }
+    .action-btn.primary-inverted i {
+        color: #429EBD;
+    }
+
+    .action-btn.primary,
+    .btn-primary-action {
+        background: #429EBD;
+        border: none;
+        border-radius: 0.75rem;
+        color: #FFFFFF;
+        padding: 1rem 0.875rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+    }
+    .action-btn.primary:hover,
+    .btn-primary-action:hover {
+        background: var(--navy);
+    }
+    .action-btn.primary i,
+    .btn-primary-action i {
+        color: #FFFFFF;
+    }
+
     .action-btn {
         border: 1px solid var(--border-color);
         border-radius: 0.75rem;
@@ -203,35 +246,56 @@
     }
     
     .action-btn:hover {
-        border-color: var(--medium-blue);
-        background: rgba(66, 158, 189, 0.1);
+        transform: translateY(-2px);
         text-decoration: none;
     }
     
     .action-btn.warning:hover {
         border-color: var(--yellow);
-        background: rgba(247, 173, 25, 0.1);
+        background: rgba(247, 173, 25, 0.05);
     }
     
     .action-btn.success:hover {
         border-color: var(--medium-blue);
-        background: rgba(66, 158, 189, 0.1);
+        background: rgba(66, 158, 189, 0.05);
     }
     
     .action-btn.info:hover {
         border-color: var(--medium-blue);
-        background: rgba(66, 158, 189, 0.1);
+        background: rgba(66, 158, 189, 0.05);
     }
     
     .action-btn.secondary:hover {
         border-color: var(--navy);
-        background: rgba(5, 63, 92, 0.08);
+        background: rgba(5, 63, 92, 0.05);
     }
     
     .quick-action-icon {
-        font-size: 2rem;
+        font-size: 1.75rem;
         display: block;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.5rem;
+        width: 48px;
+        height: 48px;
+        border-radius: 0.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .action-btn.info .quick-action-icon {
+        background: rgba(66, 158, 189, 0.15);
+    }
+    
+    .action-btn.warning .quick-action-icon {
+        background: rgba(247, 173, 25, 0.2);
+    }
+    
+    .action-btn.success .quick-action-icon {
+        background: rgba(159, 231, 245, 0.25);
+    }
+    
+    .action-btn.secondary .quick-action-icon {
+        background: rgba(5, 63, 92, 0.1);
     }
 </style>
 @endsection
@@ -413,7 +477,7 @@
                 <div class="card-body p-0">
                     @if($notifications->count() > 0)
                         @foreach($notifications as $notification)
-                            <a href="{{ route('guidance.notifications') }}" class="notification-item d-flex gap-3 text-decoration-none {{ !$notification->is_read ? 'bg-light' : '' }}">
+                            <a href="{{ route('guidance.notifications') }}" class="notification-item d-flex gap-3 text-decoration-none {{ !$notification->is_read ? 'fw-bold' : '' }}" style="{{ !$notification->is_read ? 'background: rgba(242, 127, 12, 0.08);' : '' }}">
                                 <div class="flex-grow-1">
                                     <div class="d-flex justify-content-between align-items-start">
                                         <h6 class="notification-title mb-1">{{ $notification->title }}</h6>
@@ -453,25 +517,25 @@
                     <div class="row g-3">
                         <div class="col-12 col-sm-6">
                             <a href="{{ route('guidance.requests') }}" class="action-btn warning d-block h-100">
-                                <i class="bi bi-inbox quick-action-icon" style="color: var(--yellow);"></i>
+                                <i class="bi bi-inbox quick-action-icon" style="color: #F7AD19;"></i>
                                 <span class="fw-medium d-block" style="color: var(--navy);">Pending Requests</span>
                             </a>
                         </div>
                         <div class="col-12 col-sm-6">
-                            <a href="{{ route('guidance.availability') }}" class="action-btn success d-block h-100">
-                                <i class="bi bi-calendar-plus quick-action-icon" style="color: var(--light-blue);"></i>
-                                <span class="fw-medium d-block" style="color: var(--navy);">Manage Availability</span>
+                            <a href="{{ route('guidance.availability') }}" class="action-btn primary-inverted d-block h-100">
+                                <i class="bi bi-calendar-plus quick-action-icon" style="color: #429EBD;"></i>
+                                <span class="fw-medium d-block" style="color: #429EBD;">Manage Availability</span>
                             </a>
                         </div>
                         <div class="col-12 col-sm-6">
                             <a href="{{ route('guidance.calendar') }}" class="action-btn info d-block h-100">
-                                <i class="bi bi-calendar3 quick-action-icon" style="color: var(--medium-blue);"></i>
+                                <i class="bi bi-calendar3 quick-action-icon" style="color: #429EBD;"></i>
                                 <span class="fw-medium d-block" style="color: var(--navy);">Calendar View</span>
                             </a>
                         </div>
                         <div class="col-12 col-sm-6">
                             <a href="{{ route('guidance.history') }}" class="action-btn secondary d-block h-100">
-                                <i class="bi bi-clock-history quick-action-icon" style="color: var(--navy);"></i>
+                                <i class="bi bi-clock-history quick-action-icon" style="color: #053F5C;"></i>
                                 <span class="fw-medium d-block" style="color: var(--navy);">History</span>
                             </a>
                         </div>

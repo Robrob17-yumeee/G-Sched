@@ -3,7 +3,7 @@
         <ul class="nav flex-column gap-1">
             @if(auth()->user()->isStudent())
                 <li class="nav-item">
-                    <span class="text-uppercase small text-muted px-3 py-2" style="letter-spacing: 0.05em; font-size: 0.7rem; color: #94A3B8;">STUDENT</span>
+                    <span class="text-uppercase small text-muted px-3 py-2" style="letter-spacing: 0.05em; font-size: 0.7rem; color: var(--navy);">STUDENT</span>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('student.dashboard') ? 'active' : '' }}" href="{{ route('student.dashboard') }}">
@@ -38,7 +38,7 @@
 
             @elseif(auth()->user()->isGuidanceAssociate())
                 <li class="nav-item">
-                    <span class="text-uppercase small text-muted px-3 py-2" style="letter-spacing: 0.05em; font-size: 0.7rem; color: #94A3B8;">GUIDANCE ASSOCIATE</span>
+                    <span class="text-uppercase small text-muted px-3 py-2" style="letter-spacing: 0.05em; font-size: 0.7rem; color: var(--navy);">GUIDANCE ASSOCIATE</span>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('guidance.dashboard') ? 'active' : '' }}" href="{{ route('guidance.dashboard') }}">
@@ -83,7 +83,7 @@
 
             @elseif(auth()->user()->isAdmin())
                 <li class="nav-item">
-                    <span class="text-uppercase small text-muted px-3 py-2" style="letter-spacing: 0.05em; font-size: 0.7rem; color: #94A3B8;">ADMINISTRATOR</span>
+                    <span class="text-uppercase small text-muted px-3 py-2" style="letter-spacing: 0.05em; font-size: 0.7rem; color: var(--navy);">ADMINISTRATOR</span>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">

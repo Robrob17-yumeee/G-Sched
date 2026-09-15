@@ -71,48 +71,18 @@
     }
     
     .type-badge {
-        padding: 0.25rem 0.625rem;
+        height: 24px;
+        min-width: 84px;
+        padding: 0 10px;
         border-radius: 9999px;
         font-size: 0.7rem;
         font-weight: 600;
+        line-height: 24px;
         text-transform: uppercase;
         letter-spacing: 0.025em;
     }
     
     .type-badge.feedback { background: rgba(247, 173, 25, 0.15); color: var(--navy); }
-    
-    .kpi-card {
-        border-radius: 1rem;
-        padding: 1.5rem;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    
-    .kpi-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(5, 63, 92, 0.08);
-    }
-    
-    .kpi-card.pending {
-        background: linear-gradient(135deg, rgba(247, 173, 25, 0.1) 0%, rgba(247, 173, 25, 0.05) 100%);
-        border-left: 4px solid var(--yellow);
-    }
-    
-    .kpi-card.submitted {
-        background: linear-gradient(135deg, rgba(159, 231, 245, 0.15) 0%, rgba(159, 231, 245, 0.05) 100%);
-        border-left: 4px solid var(--light-blue);
-    }
-    
-    .kpi-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 0.75rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .kpi-icon.pending { background: rgba(247, 173, 25, 0.15); color: var(--navy); }
-    .kpi-icon.submitted { background: rgba(159, 231, 245, 0.15); color: var(--navy); }
     
     .feedback-item {
         padding: 1rem 1.5rem;
@@ -181,26 +151,6 @@
                     <h1 class="h2 mb-1" style="color: var(--navy); font-weight: 700;">Feedback</h1>
                     <p class="text-muted mb-0">Share your experience and view submitted feedback</p>
                 </div>
-                <div class="d-flex gap-3">
-                    <div class="kpi-card pending d-flex align-items-center gap-3" style="min-width: 180px;">
-                        <div class="kpi-icon pending">
-                            <i class="bi bi-chat-text fs-3"></i>
-                        </div>
-                        <div>
-                            <p class="text-muted mb-0 text-uppercase small" style="letter-spacing: 0.05em;">Awaiting</p>
-                            <h5 class="mb-0" style="color: var(--navy); font-weight: 700;">{{ $appointments->count() }}</h5>
-                        </div>
-                    </div>
-                    <div class="kpi-card submitted d-flex align-items-center gap-3" style="min-width: 180px;">
-                        <div class="kpi-icon submitted">
-                            <i class="bi bi-star-fill fs-3"></i>
-                        </div>
-                        <div>
-                            <p class="text-muted mb-0 text-uppercase small" style="letter-spacing: 0.05em;">Submitted</p>
-                            <h5 class="mb-0" style="color: var(--navy); font-weight: 700;">{{ $submittedFeedback->count() }}</h5>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -230,7 +180,7 @@
                         @endforeach
                     @else
                         <div class="text-center py-5">
-                            <i class="bi bi-check-circle fs-1" style="color: var(--light-blue);"></i>
+                            <i class="bi bi-check-circle fs-1" style="color: #429EBD;"></i>
                             <h5 class="mt-3" style="color: var(--navy);">All Caught Up!</h5>
                             <p class="text-muted">No pending feedback at the moment.</p>
                         </div>

@@ -430,11 +430,11 @@
         padding: 0.5rem 1.5rem;
         font-weight: 500;
         min-height: 44px;
-        color: var(--navy);
+        color: #FFFFFF;
     }
 
     .btn-primary:hover {
-        background: #A8C7D4;
+        background: var(--navy);
     }
 
     .btn-outline-secondary {

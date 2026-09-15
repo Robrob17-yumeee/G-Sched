@@ -110,14 +110,14 @@
         justify-content: center;
     }
     
-    .kpi-icon.users { background: rgba(66, 158, 189, 0.15); color: var(--navy); }
-    .kpi-icon.students { background: rgba(159, 231, 245, 0.15); color: var(--navy); }
-    .kpi-icon.guidance { background: rgba(159, 231, 245, 0.25); color: var(--navy); }
-    .kpi-icon.appointments { background: rgba(247, 173, 25, 0.15); color: var(--navy); }
-    .kpi-icon.pending { background: rgba(247, 173, 25, 0.15); color: var(--navy); }
-    .kpi-icon.approved { background: rgba(66, 158, 189, 0.15); color: var(--navy); }
-    .kpi-icon.completed { background: rgba(159, 231, 245, 0.15); color: var(--navy); }
-    .kpi-icon.cancelled { background: rgba(242, 127, 12, 0.15); color: var(--navy); }
+    .kpi-icon.users { background: rgba(66, 158, 189, 0.2); color: #429EBD; }
+    .kpi-icon.students { background: rgba(159, 231, 245, 0.2); color: #429EBD; }
+    .kpi-icon.guidance { background: rgba(159, 231, 245, 0.3); color: #429EBD; }
+    .kpi-icon.appointments { background: rgba(247, 173, 25, 0.2); color: #F7AD19; }
+    .kpi-icon.pending { background: rgba(247, 173, 25, 0.2); color: #F7AD19; }
+    .kpi-icon.approved { background: rgba(66, 158, 189, 0.2); color: #429EBD; }
+    .kpi-icon.completed { background: rgba(159, 231, 245, 0.2); color: #429EBD; }
+    .kpi-icon.cancelled { background: rgba(242, 127, 12, 0.25); color: #F27F0C; }
     
     .chart-card {
         min-height: 280px;
@@ -129,6 +129,41 @@
         }
     }
     
+    .action-btn.primary {
+        background: #429EBD;
+        border: none;
+        border-radius: 0.75rem;
+        color: #FFFFFF;
+        padding: 1rem 0.875rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    .action-btn.primary:hover {
+        background: var(--navy);
+    }
+    .action-btn.primary i {
+        color: #FFFFFF;
+    }
+
+    .action-btn.primary-inverted {
+        background: #FFFFFF;
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        color: #429EBD;
+        padding: 1rem 0.875rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(5, 63, 92, 0.08);
+    }
+    .action-btn.primary-inverted:hover {
+        border-color: var(--medium-blue);
+        background: rgba(66, 158, 189, 0.05);
+        color: #429EBD;
+    }
+    .action-btn.primary-inverted i {
+        color: #429EBD;
+    }
+
     .action-btn {
         border: 1px solid var(--border-color);
         border-radius: 0.75rem;
@@ -139,30 +174,47 @@
     }
     
     .action-btn:hover {
-        border-color: var(--medium-blue);
-        background: rgba(66, 158, 189, 0.1);
+        transform: translateY(-2px);
         text-decoration: none;
     }
     
     .action-btn.success:hover {
         border-color: var(--medium-blue);
-        background: rgba(66, 158, 189, 0.1);
+        background: rgba(66, 158, 189, 0.05);
     }
     
     .action-btn.info:hover {
         border-color: var(--medium-blue);
-        background: rgba(66, 158, 189, 0.1);
+        background: rgba(66, 158, 189, 0.05);
     }
     
     .action-btn.warning:hover {
         border-color: var(--yellow);
-        background: rgba(247, 173, 25, 0.15);
+        background: rgba(247, 173, 25, 0.05);
     }
     
     .quick-action-icon {
-        font-size: 2rem;
+        font-size: 1.75rem;
         display: block;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.5rem;
+        width: 48px;
+        height: 48px;
+        border-radius: 0.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .action-btn.success .quick-action-icon {
+        background: rgba(159, 231, 245, 0.25);
+    }
+    
+    .action-btn.info .quick-action-icon {
+        background: rgba(66, 158, 189, 0.15);
+    }
+    
+    .action-btn.warning .quick-action-icon {
+        background: rgba(247, 173, 25, 0.2);
     }
 </style>
 @endsection
@@ -394,26 +446,26 @@
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-12 col-sm-6 col-lg-3">
-                            <a href="{{ route('admin.users.create') }}" class="action-btn d-block h-100">
-                                <i class="bi bi-person-plus quick-action-icon" style="color: var(--medium-blue);"></i>
-                                <span class="fw-medium d-block" style="color: var(--navy);">Add User</span>
+                            <a href="{{ route('admin.users.create') }}" class="action-btn primary-inverted d-block h-100">
+                                <i class="bi bi-person-plus quick-action-icon" style="color: #429EBD;"></i>
+                                <span class="fw-medium d-block" style="color: #429EBD;">Add User</span>
                             </a>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <a href="{{ route('admin.reports') }}" class="action-btn success d-block h-100">
-                                <i class="bi bi-graph-up quick-action-icon" style="color: var(--light-blue);"></i>
+                                <i class="bi bi-graph-up quick-action-icon" style="color: #429EBD;"></i>
                                 <span class="fw-medium d-block" style="color: var(--navy);">Generate Reports</span>
                             </a>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <a href="{{ route('admin.settings') }}" class="action-btn info d-block h-100">
-                                <i class="bi bi-gear quick-action-icon" style="color: var(--medium-blue);"></i>
+                                <i class="bi bi-gear quick-action-icon" style="color: #429EBD;"></i>
                                 <span class="fw-medium d-block" style="color: var(--navy);">System Settings</span>
                             </a>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <a href="{{ route('admin.logs') }}" class="action-btn warning d-block h-100">
-                                <i class="bi bi-journal-text quick-action-icon" style="color: var(--yellow);"></i>
+                                <i class="bi bi-journal-text quick-action-icon" style="color: #F7AD19;"></i>
                                 <span class="fw-medium d-block" style="color: var(--navy);">Activity Logs</span>
                             </a>
                         </div>
@@ -450,11 +502,11 @@
             scales: {
                 y: {
                     beginAtZero: true,
-                    ticks: { stepSize: 1, color: '#94A3B8' },
-                    grid: { color: '#E2E8F0' }
+                    ticks: { stepSize: 1, color: '#053F5C' },
+                    grid: { color: '#429EBD' }
                 },
                 x: {
-                    ticks: { color: '#94A3B8' },
+                    ticks: { color: '#053F5C' },
                     grid: { display: false }
                 }
             }
@@ -524,11 +576,11 @@
             scales: {
                 y: {
                     beginAtZero: true,
-                    ticks: { stepSize: 1, color: '#94A3B8' },
-                    grid: { color: '#F1F5F9' }
+                    ticks: { stepSize: 1, color: '#053F5C' },
+                    grid: { color: '#429EBD' }
                 },
                 x: {
-                    ticks: { color: '#94A3B8' },
+                    ticks: { color: '#053F5C' },
                     grid: { display: false }
                 }
             }
@@ -566,11 +618,11 @@
             scales: {
                 y: {
                     beginAtZero: true,
-                    ticks: { stepSize: 1, color: '#94A3B8' },
-                    grid: { color: '#F1F5F9' }
+                    ticks: { stepSize: 1, color: '#053F5C' },
+                    grid: { color: '#429EBD' }
                 },
                 x: {
-                    ticks: { color: '#94A3B8' },
+                    ticks: { color: '#053F5C' },
                     grid: { display: false }
                 }
             }
@@ -586,8 +638,8 @@
             datasets: [{
                 label: 'Students',
                 data: @json($genderData),
-                backgroundColor: ['rgba(66, 158, 189, 0.7)', 'rgba(159, 231, 245, 0.7)', 'rgba(169, 175, 181, 0.7)'],
-                borderColor: ['rgba(66, 158, 189, 1)', 'rgba(159, 231, 245, 1)', 'rgba(169, 175, 181, 1)'],
+                backgroundColor: ['rgba(66, 158, 189, 0.7)', 'rgba(159, 231, 245, 0.7)', 'rgba(242, 127, 12, 0.7)'],
+                borderColor: ['rgba(66, 158, 189, 1)', 'rgba(159, 231, 245, 1)', 'rgba(242, 127, 12, 1)'],
                 borderWidth: 1,
                 borderRadius: 6
             }]
@@ -608,11 +660,11 @@
             scales: {
                 y: {
                     beginAtZero: true,
-                    ticks: { stepSize: 1, color: '#94A3B8' },
-                    grid: { color: '#F1F5F9' }
+                    ticks: { stepSize: 1, color: '#053F5C' },
+                    grid: { color: '#429EBD' }
                 },
                 x: {
-                    ticks: { color: '#94A3B8' },
+                    ticks: { color: '#053F5C' },
                     grid: { display: false }
                 }
             }

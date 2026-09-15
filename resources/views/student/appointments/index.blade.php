@@ -81,8 +81,8 @@
     }
     
     .status-badge.pending {
-        background: rgba(247, 173, 25, 0.15);
-        color: var(--navy);
+        background: #ffbf00;
+        color: #FFFFFF;
     }
     
     .status-badge.approved {
@@ -92,17 +92,17 @@
     
     .status-badge.rejected {
         background: rgba(242, 127, 12, 0.15);
-        color: var(--navy);
+        color: #FFFFFF;
     }
     
     .status-badge.completed {
-        background: rgba(159, 231, 245, 0.15);
-        color: var(--navy);
+        background: #21db3d;
+        color: #FFFFFF;
     }
     
     .status-badge.cancelled {
-        background: rgba(242, 127, 12, 0.15);
-        color: var(--navy);
+        background: #db213a;
+        color: #FFFFFF;
     }
     
     .btn-icon {
@@ -227,7 +227,7 @@
         justify-content: center;
     }
     
-    .kpi-icon.appointments { background: rgba(66, 158, 189, 0.15); color: var(--navy); }
+    .kpi-icon.appointments { background: rgba(66, 158, 189, 0.2); color: #429EBD; }
     
     .modal-content {
         border: none;
@@ -257,20 +257,26 @@
         border-radius: 0.5rem;
         color: #FFFFFF;
         font-weight: 500;
-        padding: 0.5rem 1rem;
+        padding: 0.625rem 1.25rem;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
         text-decoration: none;
-        transition: background-color 0.2s ease;
+        transition: all 0.2s ease;
+        min-height: 44px;
+    }
+    
+    .btn-book-appointment i {
+        color: #FFFFFF;
+        font-size: 1.1rem;
     }
     
     .btn-book-appointment:hover {
-        background: #3a8ca8;
+        background: var(--navy);
     }
     
     .btn-book-appointment:focus {
-        background: #3a8ca8;
+        background: var(--navy);
         box-shadow: 0 0 0 3px rgba(66, 158, 189, 0.4);
     }
     
@@ -280,11 +286,11 @@
         border-radius: 0.5rem;
         padding: 0.625rem 1.25rem;
         font-weight: 500;
-        color: var(--navy);
+        color: #FFFFFF;
     }
     
     .btn-primary:hover {
-        background: #3a8ca8;
+        background: var(--navy);
     }
 </style>
 @endsection

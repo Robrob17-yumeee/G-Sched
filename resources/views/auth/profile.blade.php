@@ -9,31 +9,50 @@
 
 <div class="row justify-content-center">
     <div class="col-md-10">
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white">
-                <h5 class="mb-0"><i class="bi bi-person me-2"></i>Profile Information</h5>
-            </div>
-            <div class="card-body text-center">
-                <div class="bg-light bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 160px; height: 160px; background: rgba(66, 158, 189, 0.15) !important;">
-                    <i class="bi bi-person fs-1"></i>
-                </div>
-                <h4>{{ auth()->user()->full_name }}</h4>
-                <p class="text-muted">{{ auth()->user()->email }}</p>
-                <span class="badge bg-{{ auth()->user()->role->name === 'admin' ? 'danger' : (auth()->user()->role->name === 'guidance_associate' ? 'info' : 'success') }}">
-                    {{ ucfirst(str_replace('_', ' ', auth()->user()->role->name)) }}
-                </span>
-            </div>
-        </div>
-
         <div class="card shadow-sm">
             <div class="card-header bg-white">
-                <h5 class="mb-0"><i class="bi bi-pencil me-2"></i>Edit Profile</h5>
+                <h5 class="mb-0"><i class="bi bi-pencil me-2"></i>Profile Information</h5>
             </div>
             <div class="card-body">
-                <form method="POST" action="{{ route('profile.update') }}">
+                <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    
+                    <input type="hidden" name="remove_photo" id="removePhotoInput" value="0">
+
+                    <!-- Profile Photo -->
+                    <div class="text-center mb-4">
+                        @if(auth()->user()->profile_photo)
+                            <img src="{{ asset('storage/' . auth()->user()->profile_photo) }}" alt="Profile Photo" class="profile-photo-preview" id="photoPreview">
+                        @else
+                            <div class="bg-light bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center profile-photo-placeholder" id="photoPlaceholder" style="width: 160px; height: 160px; background: rgba(66, 158, 189, 0.15) !important;">
+                                <i class="bi bi-person fs-1"></i>
+                            </div>
+                        @endif
+                        <div class="mt-3">
+                            <label for="profile_photo" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-upload me-1"></i>Choose Photo
+                            </label>
+                            <input type="file" class="d-none" id="profile_photo" name="profile_photo" accept="image/*">
+                        </div>
+                        @error('profile_photo')
+                            <div class="invalid-feedback d-block mt-1">{{ $message }}</div>
+                        @enderror
+                        @if(auth()->user()->profile_photo)
+                            <button type="button" class="btn btn-outline-danger btn-sm mt-2" id="removePhotoBtn">
+                                <i class="bi bi-trash me-1"></i>Remove Photo
+                            </button>
+                        @endif
+                    </div>
+
+                    <!-- Display Name & Email (non-editable display) -->
+                    <div class="text-center mb-4">
+                        <h4>{{ auth()->user()->full_name }}</h4>
+                        <p class="text-muted">{{ auth()->user()->email }}</p>
+                        <span class="badge bg-{{ auth()->user()->role->name === 'admin' ? 'danger' : (auth()->user()->role->name === 'guidance_associate' ? 'info' : 'success') }}">
+                            {{ ucfirst(str_replace('_', ' ', auth()->user()->role->name)) }}
+                        </span>
+                    </div>
+
                     <!-- Full Name -->
                     <div class="mb-4">
                         <h6 class="text-muted mb-3">Full Name</h6>
@@ -221,4 +240,52 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('profile_photo');
+    const photoPreview = document.getElementById('photoPreview');
+    const photoPlaceholder = document.getElementById('photoPlaceholder');
+    const removePhotoBtn = document.getElementById('removePhotoBtn');
+    const removePhotoInput = document.getElementById('removePhotoInput');
+    const previewContainer = photoPreview ? photoPreview.parentElement : (photoPlaceholder ? photoPlaceholder.parentElement : null);
+
+    fileInput?.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            removePhotoInput.value = '0';
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                let img = document.getElementById('photoPreview');
+                if (!img) {
+                    img = document.createElement('img');
+                    img.id = 'photoPreview';
+                    img.alt = 'Profile Photo';
+                    img.className = 'profile-photo-preview';
+                    if (photoPlaceholder) photoPlaceholder.remove();
+                    previewContainer.appendChild(img);
+                }
+                img.src = e.target.result;
+                if (removePhotoBtn) removePhotoBtn.style.display = 'inline-block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    removePhotoBtn?.addEventListener('click', function() {
+        if (confirm('Are you sure you want to remove your profile photo?')) {
+            removePhotoInput.value = '1';
+            fileInput.value = '';
+            const img = document.getElementById('photoPreview');
+            if (img) img.remove();
+            if (!document.getElementById('photoPlaceholder') && photoPlaceholder) {
+                previewContainer.appendChild(photoPlaceholder);
+            }
+            removePhotoBtn.style.display = 'none';
+        }
+    });
+});
+</script>
 @endsection

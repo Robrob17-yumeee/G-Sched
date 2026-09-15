@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Validator;
 
@@ -115,6 +116,7 @@ class AuthController extends Controller
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
+            'profile_photo' => ['nullable', 'image', 'max:2048'],
         ];
 
         if ($isStudent) {
@@ -158,6 +160,21 @@ class AuthController extends Controller
             $updateData['professional_experience'] = $request->professional_experience;
             $updateData['professional_biography'] = $request->professional_biography;
             $updateData['office_location'] = $request->office_location;
+        }
+
+        if ($request->input('remove_photo') == '1') {
+            if ($user->profile_photo && Storage::disk('public')->exists($user->profile_photo)) {
+                Storage::disk('public')->delete($user->profile_photo);
+            }
+            $updateData['profile_photo'] = null;
+        }
+
+        if ($request->hasFile('profile_photo')) {
+            if ($user->profile_photo && Storage::disk('public')->exists($user->profile_photo)) {
+                Storage::disk('public')->delete($user->profile_photo);
+            }
+            $path = $request->file('profile_photo')->store('profile-photos', 'public');
+            $updateData['profile_photo'] = $path;
         }
 
         $user->update($updateData);
