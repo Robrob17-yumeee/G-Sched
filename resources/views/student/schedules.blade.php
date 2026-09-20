@@ -1,21 +1,7 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('styles')
 <style>
-    :root {
-        --navy: #053F5C;
-        --medium-blue: #429EBD;
-        --light-blue: #9FE7F5;
-        --yellow: #F7AD19;
-        --orange: #F27F0C;
-        --bg-light: #F7FAFC;
-        --card-bg: #FFFFFF;
-        --text-primary: #053F5C;
-        --text-muted: #64748B;
-        --border-color: #E2E8F0;
-        --border-color-light: #F1F5F9;
-    }
-
     body {
         background-color: var(--bg-light);
         font-family: 'Inter', 'Roboto', sans-serif;
@@ -100,16 +86,27 @@
         justify-content: center;
     }
 
-    .kpi-icon.schedules { background: rgba(66, 158, 189, 0.2); color: #429EBD; }
+    .kpi-icon.schedules { background: rgba(66, 158, 189, 0.2); color: var(--medium-blue); }
 
     .modal-content {
         border: none;
-        border-radius: 1rem;
+        border-radius: 0.25rem;
+    }
+
+    .modal-dialog-centered {
+        display: flex;
+        align-items: center;
+        min-height: calc(100% - 1rem);
+    }
+
+    .modal-body {
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
     }
 
     .modal-header {
         border: none;
-        border-radius: 1rem 1rem 0 0;
+        border-radius: 0.25rem 0.25rem 0 0;
     }
 
     .form-control, .form-select {
@@ -129,7 +126,7 @@
         border-radius: 0.5rem;
         padding: 0.625rem 1.25rem;
         font-weight: 500;
-        color: #FFFFFF;
+        color: var(--badge-text-light);
         min-height: 44px;
     }
 
@@ -143,7 +140,7 @@
         border-radius: 0.5rem;
         padding: 0.625rem 1.25rem;
         font-weight: 500;
-        color: var(--navy);
+        color: var(--text-primary);
     }
 
     .btn-secondary:hover {
@@ -160,7 +157,7 @@
     }
 
     .form-label {
-        color: var(--navy);
+        color: var(--text-primary);
         font-weight: 500;
         margin-bottom: 0.375rem;
     }
@@ -203,7 +200,7 @@
 
     .view-switch .view-btn.active {
         background: var(--medium-blue);
-        color: #FFFFFF;
+        color: #FFFFFF !important;
     }
 
     .view-switch .view-btn.active i {
@@ -254,14 +251,14 @@
 
     .panel-header h5 {
         margin: 0;
-        color: var(--navy);
+        color: var(--text-primary);
         font-weight: 600;
     }
 
      .date-number {
         font-size: 3rem;
         font-weight: 700;
-        color: var(--navy);
+        color: var(--text-primary);
         line-height: 1;
     }
 
@@ -294,13 +291,13 @@
     .detail-value {
         font-size: 1.1rem;
         font-weight: 600;
-        color: var(--navy);
+        color: var(--text-primary);
         margin-bottom: 0.25rem;
     }
 
     .slots-badge {
         background: var(--light-blue);
-        color: var(--navy);
+        color: var(--text-primary);
         border-radius: 1rem;
         padding: 0.375rem 0.875rem;
         font-size: 0.9rem;
@@ -327,7 +324,7 @@
 
     .action-btn {
         background: var(--medium-blue);
-        color: #FFFFFF;
+        color: var(--badge-text-light);
         border: none;
         border-radius: 0.75rem;
         padding: 0.625rem 1.25rem;
@@ -374,7 +371,7 @@
 
     .session-time {
         font-weight: 600;
-        color: var(--navy);
+        color: var(--text-primary);
         font-size: 1rem;
     }
 
@@ -422,26 +419,26 @@
         justify-content: center;
         cursor: pointer;
         transition: all 0.2s ease;
-        color: var(--navy);
+        color: var(--text-primary);
         font-size: 1.1rem;
     }
 
     .calendar-nav-btn:hover {
         background: var(--medium-blue);
-        color: #FFFFFF;
+        color: var(--badge-text-light);
     }
 
     .calendar-month-year {
         font-size: 1.25rem;
         font-weight: 600;
-        color: var(--navy);
+        color: var(--text-primary);
         min-width: 180px;
         text-align: center;
     }
 
     .calendar-today-btn {
         background: var(--light-blue);
-        color: var(--navy);
+        color: var(--text-primary);
         border: none;
         border-radius: 0.5rem;
         padding: 0.5rem 1rem;
@@ -453,7 +450,7 @@
 
     .calendar-today-btn:hover {
         background: var(--medium-blue);
-        color: #FFFFFF;
+        color: var(--badge-text-light);
     }
 
     /* Fixed 7-column calendar grid */
@@ -473,7 +470,7 @@
     }
 
     .calendar-day-header {
-        background: var(--navy);
+        background: #0077b6;
         color: #FFFFFF;
         padding: 0.5rem;
         text-align: center;
@@ -502,7 +499,7 @@
     .calendar-day-number {
         font-weight: 500;
         font-size: 0.9rem;
-        color: var(--navy);
+        color: var(--text-primary);
     }
 
     .calendar-day.other-month {
@@ -540,12 +537,12 @@
 
     .calendar-day.selected {
         background: var(--medium-blue);
-        color: #FFFFFF;
+        color: var(--badge-text-light);
         cursor: default;
     }
 
     .calendar-day.selected .calendar-day-number {
-        color: #FFFFFF;
+        color: var(--badge-text-light);
         font-weight: 700;
     }
 
@@ -557,7 +554,7 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: #FFFFFF;
+        background: var(--badge-text-light);
     }
 
     .calendar-day.available:hover {
@@ -616,7 +613,7 @@
     <div class="col-12">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h1 class="h2 mb-1" style="color: var(--navy); font-weight: 700;">Available Schedules</h1>
+                <h1 class="h2 mb-1" style="color: var(--text-primary); font-weight: 700;">Available Schedules</h1>
                 <p class="text-muted mb-0">Browse and book available counseling sessions</p>
             </div>
             <div class="d-flex align-items-center">
@@ -782,7 +779,7 @@
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="card date-card {{ $slotCount > 0 ? '' : 'no-slots' }}">
                         <div class="card-header" style="border-bottom: 1px solid var(--border-color-light);">
-                            <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                            <h5 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                                 <i class="bi bi-calendar-date me-2" style="color: var(--medium-blue);"></i>
                                 {{ $dateObj->format('l, F d, Y') }}
                             </h5>
@@ -793,7 +790,7 @@
                                     <i class="bi bi-person-badge me-1" style="color: var(--medium-blue);"></i>
                                     <div>
                                         <p class="text-muted small mb-0">Guidance Associate</p>
-                                        <p class="fw-medium mb-0" style="color: var(--navy);">{{ $guidanceAssociate->full_name }}</p>
+                                        <p class="fw-medium mb-0" style="color: var(--text-primary);">{{ $guidanceAssociate->full_name }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -802,7 +799,7 @@
                                 <div class="mb-4">
                                     <div class="d-flex align-items-center gap-2">
                                         <i class="bi bi-clock me-1" style="color: var(--medium-blue);"></i>
-                                        <p class="mb-0 fw-medium" style="color: var(--navy);">{{ $slotCount }} {{ $slotCount === 1 ? 'slot' : 'slots' }} available</p>
+                                        <p class="mb-0 fw-medium" style="color: var(--text-primary);">{{ $slotCount }} {{ $slotCount === 1 ? 'slot' : 'slots' }} available</p>
                                     </div>
                                 </div>
 
@@ -819,7 +816,7 @@
                             @else
                                 <div class="mb-3">
                                     <div class="d-flex align-items-center gap-2">
-                                        <i class="bi bi-clock-slash me-1" style="color: var(--navy);"></i>
+                                        <i class="bi bi-clock-slash me-1" style="color: var(--text-primary);"></i>
                                         <p class="mb-0 text-muted fw-medium">No available slots</p>
                                     </div>
                                 </div>
@@ -844,65 +841,72 @@
 </div>
 
 <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="background: var(--medium-blue); color: var(--navy);">
-                <h5 class="modal-title" id="bookingModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="max-width: 600px; margin: 0 auto; border-radius: 0.25rem;">
+            <div class="modal-header" style="background: #0077b6; color: #FFFFFF; border-radius: 0.25rem 0.25rem 0 0; padding: 0.75rem 1.25rem;">
+                <h5 class="modal-title mb-0" id="bookingModalLabel">
                     <i class="bi bi-calendar-plus me-2"></i>Book Appointment
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" action="{{ route('student.appointments.store') }}" id="bookingForm">
                 @csrf
-                <div class="modal-body">
+                <div class="modal-body" style="padding: 0.75rem 1rem;">
                     <input type="hidden" name="availability_id" id="modal_availability_id">
                     <input type="hidden" name="appointment_date" id="modal_appointment_date">
                     <input type="hidden" name="start_time" id="modal_start_time">
                     <input type="hidden" name="end_time" id="modal_end_time">
                     <input type="hidden" name="guidance_associate_id" id="modal_guidance_associate_id">
 
-                    <div class="mb-3">
-                        <label class="form-label">Date</label>
-                        <input type="text" class="form-control readonly-field" id="modal_date_display" readonly>
+                    <div class="mb-1 p-1" style="background: var(--bg-light); border-radius: 0.375rem; border: 1px solid var(--border-color-light);">
+                        <div class="d-flex align-items-center gap-2 mb-0">
+                            <i class="bi bi-calendar-date" style="color: #0077b6; font-size: 1rem;"></i>
+                            <span class="form-label small mb-0" style="color: var(--text-muted);">Date</span>
+                        </div>
+                        <div class="fw-medium small" style="color: var(--text-primary);" id="modal_date_display">September 17, 2026</div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Guidance Associate</label>
-                        <input type="text" class="form-control readonly-field" id="modal_guidance_associate_name" readonly>
+                    <div class="mb-1 p-1" style="background: var(--bg-light); border-radius: 0.375rem; border: 1px solid var(--border-color-light);">
+                        <div class="d-flex align-items-center gap-2 mb-0">
+                            <i class="bi bi-person-badge" style="color: #0077b6; font-size: 1rem;"></i>
+                            <span class="form-label small mb-0" style="color: var(--text-muted);">Guidance Associate</span>
+                        </div>
+                        <div class="fw-medium small" style="color: var(--text-primary);" id="modal_guidance_associate_name">Guidance Associate Name</div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label" style="color: var(--navy);">Time Slot <span class="text-danger">*</span></label>
-                        <select class="form-select" id="modal_time_slot" required>
+                    <div class="mb-1">
+                        <label class="form-label small">Time Slot <span class="text-danger">*</span></label>
+                        <select class="form-select form-select-sm" id="modal_time_slot" required>
                             <option value="">Select a time slot</option>
                         </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label" style="color: var(--navy);">Purpose of Appointment <span class="text-danger">*</span></label>
-                        <textarea class="form-control" id="purpose" name="purpose" rows="4" required placeholder="Please describe the reason for your appointment..."></textarea>
+                    <div class="mb-1" id="concern_category_wrapper" style="display: none;">
+                        <label for="modal_concern_category" class="form-label small">Concern / Category <span class="text-danger">*</span></label>
+                        <select class="form-select form-select-sm" id="modal_concern_category" name="concern_category">
+                            <option value="">Select a concern</option>
+                            <option value="Academic Concerns">Academic Concerns</option>
+                            <option value="Personal Concerns">Personal Concerns</option>
+                            <option value="Family Concerns">Family Concerns</option>
+                            <option value="Peer / Social Concerns">Peer / Social Concerns</option>
+                            <option value="Emotional / Well-being Concerns">Emotional / Well-being Concerns</option>
+                            <option value="Career / Educational Planning">Career / Educational Planning</option>
+                            <option value="Financial Concerns">Financial Concerns</option>
+                            <option value="Adjustment Concerns">Adjustment Concerns</option>
+                            <option value="Behavioral Concerns">Behavioral Concerns</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label" style="color: var(--navy);">Severity <span class="text-danger">*</span></label>
-                        <select class="form-select @error('severity') is-invalid @enderror" id="severity" name="severity" required>
-                            <option value="low">Low - General counseling</option>
-                            <option value="medium">Medium - Ongoing concern</option>
-                            <option value="high">High - Urgent/Confidential (Admin only)</option>
-                        </select>
-                        @error('severity')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <div class="form-text">
-                            <i class="bi bi-info-circle me-1"></i>
-                            <strong>High severity:</strong> Your identity will be confidential. Only admins can see your details.
-                        </div>
+                    <div class="mb-1">
+                        <label class="form-label small">Purpose <span class="text-danger">*</span></label>
+                        <textarea class="form-control form-control-sm" id="purpose" name="purpose" rows="2" required placeholder="Reason for appointment..."></textarea>
                     </div>
                 </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-check-circle me-2"></i>Confirm Booking
+                <div class="modal-footer border-0 justify-content-between" style="padding: 0.5rem 1rem; border-top: 1px solid var(--border-color-light);">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="bi bi-check-circle me-1"></i>Confirm
                     </button>
                 </div>
             </form>
@@ -1195,10 +1199,8 @@
             const guidanceAssociateId = button.getAttribute('data-guidance-associate-id');
             const availabilityJson = button.getAttribute('data-availability-json');
 
-            document.getElementById('modal_date_display').value = dateDisplay;
-            document.getElementById('modal_appointment_date').value = date;
-            document.getElementById('modal_guidance_associate_name').value = guidanceAssociateName;
-            document.getElementById('modal_guidance_associate_id').value = guidanceAssociateId;
+            document.getElementById('modal_date_display').textContent = dateDisplay;
+            document.getElementById('modal_guidance_associate_name').textContent = guidanceAssociateName;
 
             const timeSlotSelect = document.getElementById('modal_time_slot');
             timeSlotSelect.innerHTML = '<option value="">Select a time slot</option>';
@@ -1219,22 +1221,33 @@
             document.getElementById('bookingForm').reset();
             timeSlotSelect.value = '';
 
-            document.getElementById('modal_guidance_associate_name').readOnly = true;
+            document.getElementById('modal_appointment_date').value = date;
+            document.getElementById('modal_guidance_associate_id').value = guidanceAssociateId;
             document.getElementById('modal_availability_id').value = '';
             document.getElementById('modal_start_time').value = '';
             document.getElementById('modal_end_time').value = '';
+            document.getElementById('concern_category_wrapper').style.display = 'none';
+            document.getElementById('modal_concern_category').value = '';
+            document.getElementById('modal_concern_category').required = false;
         });
 
         document.getElementById('modal_time_slot').addEventListener('change', function() {
             const selected = this.value;
+            const concernWrapper = document.getElementById('concern_category_wrapper');
+            const concernSelect = document.getElementById('modal_concern_category');
             if (selected) {
                 const parts = selected.split('|');
                 document.getElementById('modal_availability_id').value = parts[0];
                 document.getElementById('modal_start_time').value = parts[1];
                 document.getElementById('modal_end_time').value = parts[2];
                 selectedSlot = parts;
+                concernWrapper.style.display = 'block';
+                concernSelect.required = true;
             } else {
                 selectedSlot = null;
+                concernWrapper.style.display = 'none';
+                concernSelect.required = false;
+                concernSelect.value = '';
             }
         });
 
@@ -1243,7 +1256,13 @@
                 e.preventDefault();
                 const timeSlotSelect = document.getElementById('modal_time_slot');
                 timeSlotSelect.classList.add('is-invalid');
-                return;
+                return false;
+            }
+            const concernSelect = document.getElementById('modal_concern_category');
+            if (selectedSlot && concernSelect && !concernSelect.value) {
+                e.preventDefault();
+                concernSelect.classList.add('is-invalid');
+                return false;
             }
         });
 

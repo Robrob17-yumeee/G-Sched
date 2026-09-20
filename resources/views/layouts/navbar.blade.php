@@ -25,20 +25,20 @@
                              <div class="position-relative d-inline-block">
                                  <i class="bi bi-bell fs-4" style="color: #FFD200;"></i>
                                  @if(auth()->user()->unreadNotificationsCount() > 0)
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill notification-badge" style="background: #FFD200; color: #053F5C; font-size: 0.65rem; padding: 0.25rem 0.5rem; min-width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;">
+                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background: #FFD200; color: #053F5C; font-size: 0.65rem; font-weight: 700; padding: 0.25rem 0.5rem; min-width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;">
                                         {{ auth()->user()->unreadNotificationsCount() }}
                                     </span>
                                  @endif
                              </div>
                          </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="notificationsDropdown" style="min-width: 300px; max-width: 90vw; max-height: 400px; overflow-y: auto; border: none; box-shadow: 0 10px 30px rgba(5, 63, 92, 0.1); border-radius: 1rem;">
+                        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="notificationsDropdown" style="min-width: 400px; width: 480px; max-width: calc(100vw - 30px); max-height: 450px; overflow-y: auto; overflow-x: hidden; border: none; box-shadow: 0 10px 30px rgba(5, 63, 92, 0.1); border-radius: 1rem;">
                             <li><h6 class="dropdown-header px-3 py-2" style="color: #FFD200; font-weight: 600;">Notifications</h6></li>
                             @foreach(auth()->user()->notifications()->latest()->take(10)->get() as $notification)
                                 <li>
-                                    <a class="dropdown-item px-3 py-3 {{ !$notification->is_read ? 'fw-bold' : '' }}" href="{{ route('notifications.show', $notification) }}" style="border-bottom: 1px solid var(--border-color-light);">
-                                        <div class="d-flex gap-3">
+                                    <a class="dropdown-item px-4 py-3 {{ !$notification->is_read ? 'fw-bold' : '' }}" href="{{ route('notifications.show', $notification) }}" style="border-bottom: 1px solid var(--border-color-light); white-space: normal;">
+                                        <div class="d-flex gap-3 align-items-start">
                                             <div class="flex-shrink-0">
-                                                <div class="kpi-icon notifications" style="width: 36px; height: 36px;">
+                                                <div class="kpi-icon notifications" style="width: 40px; height: 40px; border-radius: 0.75rem; background: rgba(159, 231, 245, 0.25);">
                                                     <i class="bi {{ $notification->icon }} fs-5" style="color: #FFD200;"></i>
                                                 </div>
                                             </div>
@@ -52,7 +52,7 @@
                                 </li>
                             @endforeach
                             <li><hr class="dropdown-divider mx-3" style="border-color: var(--border-color-light);"></li>
-                            <li><a class="dropdown-item px-3 py-2 text-center" href="{{ auth()->user()->isAdmin() ? route('admin.notifications') : (auth()->user()->isGuidanceAssociate() ? route('guidance.notifications') : route('student.notifications')) }}" style="color: #FFD200; font-weight: 500;">View All Notifications</a></li>
+                            <li><a class="dropdown-item px-4 py-2 text-center" href="{{ auth()->user()->isAdmin() ? route('admin.notifications') : (auth()->user()->isGuidanceAssociate() ? route('guidance.notifications') : route('student.notifications')) }}" style="color: #FFD200; font-weight: 500;">View All Notifications</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

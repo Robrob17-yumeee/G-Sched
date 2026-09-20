@@ -23,6 +23,7 @@ class NotificationController extends Controller
     public function adminIndex()
     {
         $notifications = Notification::with('user')
+            ->whereIn('type', ['appointment_request', 'appointment_request_high', 'feedback', 'case_high_severity'])
             ->latest()
             ->paginate(20);
         return view('admin.notifications', compact('notifications'));

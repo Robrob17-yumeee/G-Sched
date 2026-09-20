@@ -1,12 +1,16 @@
-@extends('layouts.app')
-
+﻿@extends('layouts.app')
+ 
 @section('title', ' - Register')
+
+@php
+    $hide_navbar = true;
+@endphp
 
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-8 col-lg-6">
         <div class="card shadow">
-            <div class="card-header" style="background: #053F5C; color: #FFFFFF; text-center">
+            <div class="card-header" style="background: var(--medium-blue); color: var(--badge-text-light); text-center">
                 <h4 class="mb-0"><i class="bi bi-person-plus me-2"></i>Student Registration</h4>
             </div>
             <div class="card-body p-4">

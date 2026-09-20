@@ -234,6 +234,62 @@ class GuidanceAppointmentController extends Controller
         return redirect()->route('guidance.appointments')->with('success', 'Appointment marked as completed!');
     }
 
+    public function assignSeverity(Request $request, Appointment $appointment)
+    {
+        $this->authorizeGuidance($appointment);
+        
+        $request->validate([
+            'severity' => 'required|in:not_assessed,low,moderate,high',
+        ]);
+
+        DB::transaction(function () use ($appointment, $request) {
+            $oldSeverity = $appointment->severity;
+            $newSeverity = $request->severity;
+            
+            $appointment->update([
+                'severity' => $newSeverity,
+            ]);
+
+            ActivityLog::log('ASSIGN_SEVERITY', "Updated severity for appointment #{$appointment->id} from " . ($oldSeverity ?: 'not_assessed') . " to {$newSeverity}", 'Appointments', Auth::id());
+
+            // Send student notification for Low, Moderate, or High severity
+            if (in_array($newSeverity, ['low', 'moderate', 'high'])) {
+                if ($newSeverity === 'high') {
+                    $studentMessage = "Your guidance case has been assessed as requiring further attention. You may now proceed to the Student Center Guidance Associate Office for assistance.";
+                } else {
+                    $studentMessage = "Your guidance case has been assessed. You may now proceed to the Student Center Guidance Associate Office for your scheduled appointment.";
+                }
+                
+                Notification::create([
+                    'user_id' => $appointment->student_id,
+                    'title' => 'Guidance Case Assessed',
+                    'message' => $studentMessage,
+                    'type' => 'case_assessed',
+                    'related_appointment_id' => $appointment->id,
+                ]);
+
+                // Send admin notification only when severity changes TO High
+                if ($newSeverity === 'high' && $oldSeverity !== 'high') {
+                    $admins = User::whereHas('role', function ($q) {
+                        $q->where('name', 'admin');
+                    })->get();
+
+                    foreach ($admins as $admin) {
+                        Notification::create([
+                            'user_id' => $admin->id,
+                            'title' => 'High-Severity Case Requires Attention',
+                            'message' => "A high-severity guidance case was identified for appointment #{$appointment->id}. Please review the student's case details.",
+                            'type' => 'case_high_severity',
+                            'related_appointment_id' => $appointment->id,
+                        ]);
+                    }
+                }
+            }
+        });
+
+        return redirect()->back()->with('success', 'Severity updated successfully!');
+    }
+
     public function sendReminder(Appointment $appointment)
     {
         $this->authorizeGuidance($appointment);

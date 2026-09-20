@@ -38,10 +38,17 @@
         padding: 1.5rem;
     }
     
+    .table-responsive {
+        border-radius: 12px;
+        overflow: hidden;
+        background: #2148db;
+    }
+
     .table {
         margin-bottom: 0;
+        background: transparent;
     }
-    
+
     .table th {
         color: var(--text-muted);
         font-weight: 600;
@@ -50,6 +57,24 @@
         letter-spacing: 0.05em;
         border-bottom: 1px solid var(--border-color-light);
         padding: 1rem 1.5rem;
+    }
+
+    .table thead {
+        background: #0077b6 !important;
+    }
+
+    .table thead th {
+        background: #0077b6 !important;
+        color: #FFFFFF !important;
+        border-bottom: none;
+    }
+
+    .table tbody {
+        background: #FFFFFF;
+    }
+
+    .table td {
+        background: #FFFFFF;
     }
     
     .table td {

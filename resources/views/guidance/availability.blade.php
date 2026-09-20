@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', ' - Manage Availability')
 
@@ -79,9 +79,9 @@
 
 <!-- Add Availability Modal -->
 <div class="modal fade" id="addAvailabilityModal" tabindex="-1" aria-labelledby="addAvailabilityModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header" style="background: #053F5C; color: #FFFFFF;">
+            <div class="modal-header" style="background: var(--medium-blue); color: var(--badge-text-light);">
                 <h5 class="modal-title" id="addAvailabilityModalLabel">
                     <i class="bi bi-calendar-plus me-2"></i>Add Availability
                 </h5>

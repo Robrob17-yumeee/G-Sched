@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', ' - Submit Feedback')
 
@@ -6,7 +6,7 @@
 <div class="feedback-container">
     <div class="feedback-header d-flex justify-content-between align-items-center flex-wrap mb-4">
         <div>
-            <h1 class="h2 mb-1" style="color: var(--navy); font-weight: 700;">
+            <h1 class="h2 mb-1" style="color: var(--text-primary); font-weight: 700;">
                 <i class="bi bi-chat-text me-2" style="color: var(--medium-blue);"></i>Submit Feedback
             </h1>
             <p class="text-muted mb-0">Please share your experience with your guidance appointment.</p>
@@ -20,7 +20,7 @@
         <div class="col-lg-10">
             <div class="card shadow-sm">
                 <div class="card-header bg-white border-bottom">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                    <h5 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                         Feedback for Appointment
                     </h5>
                 </div>
@@ -32,7 +32,7 @@
                                     <div class="small text-muted" style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;">
                                         Guidance Associate
                                     </div>
-                                    <div class="fw-medium" style="color: var(--navy);">
+                                    <div class="fw-medium" style="color: var(--text-primary);">
                                         {{ $appointment->guidanceAssociate->full_name }}
                                     </div>
                                 </div>
@@ -40,15 +40,15 @@
                                     <div class="small text-muted" style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;">
                                         Date & Time
                                     </div>
-                                    <div class="fw-medium" style="color: var(--navy);">
-                                        {{ $appointment->formatted_date }} <span class="text-muted fw-normal">•</span> {{ $appointment->formatted_time }}
+                                    <div class="fw-medium" style="color: var(--text-primary);">
+                                        {{ $appointment->formatted_date }} <span class="text-muted fw-normal">â€¢</span> {{ $appointment->formatted_time }}
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="small text-muted" style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;">
                                         Purpose
                                     </div>
-                                    <div class="fw-medium" style="color: var(--navy);">
+                                    <div class="fw-medium" style="color: var(--text-primary);">
                                         {{ Str::limit($appointment->purpose, 200) }}
                                     </div>
                                 </div>
@@ -76,10 +76,10 @@
 
                         <div class="sqd-section mb-4">
                             <h4 class="sqd-title mb-2">
-                                SERVICE QUALITY DIMENSION (SQD) 0–8
+                                SERVICE QUALITY DIMENSION (SQD) 0â€“8
                             </h4>
                             <p class="sqd-instruction text-muted mb-4">
-                                For SQD 0–8, please put a check mark (✓) on the column that best corresponds to your answer.
+                                For SQD 0â€“8, please put a check mark (âœ“) on the column that best corresponds to your answer.
                             </p>
 
                             <div class="sqd-legend mb-4 d-none d-md-flex justify-content-end gap-2">
@@ -187,7 +187,7 @@
                                             </label>
                                             <label class="sqd-option" for="{{ $field }}_not_applicable">
                                                 <input type="radio" name="{{ $field }}" value="not_applicable" id="{{ $field }}_not_applicable" required>
-                                                <span>N/A – Not Applicable</span>
+                                                <span>N/A â€“ Not Applicable</span>
                                             </label>
                                         </div>
                                     </div>
@@ -196,7 +196,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="suggestions" class="form-label fw-medium" style="color: var(--navy);">
+                            <label for="suggestions" class="form-label fw-medium" style="color: var(--text-primary);">
                                 Suggestions on how we can further improve our services <span class="text-muted fw-normal">(optional)</span>
                             </label>
                             <textarea class="form-control" id="suggestions" name="suggestions" rows="5"
@@ -239,7 +239,7 @@
     }
 
     .sqd-title {
-        color: var(--navy);
+        color: var(--text-primary);
         font-size: 1.25rem;
         font-weight: 700;
         border-bottom: 2px solid var(--medium-blue);
@@ -282,7 +282,7 @@
         background: var(--bg-light);
         border-bottom: 2px solid var(--border-color);
         font-weight: 600;
-        color: var(--navy);
+        color: var(--text-primary);
         font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 0.03em;
@@ -430,7 +430,7 @@
         padding: 0.5rem 1.5rem;
         font-weight: 500;
         min-height: 44px;
-        color: #FFFFFF;
+        color: var(--badge-text-light);
     }
 
     .btn-primary:hover {

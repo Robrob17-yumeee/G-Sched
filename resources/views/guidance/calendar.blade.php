@@ -1,23 +1,9 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
-@section('title', ' - Calendar')
+@section('title', ' - Manage Availability')
 
 @section('styles')
 <style>
-    :root {
-        --navy: #053F5C;
-        --medium-blue: #429EBD;
-        --light-blue: #9FE7F5;
-        --yellow: #F7AD19;
-        --orange: #F27F0C;
-        --bg-light: #F7FAFC;
-        --card-bg: #FFFFFF;
-        --text-primary: #053F5C;
-        --text-muted: #64748B;
-        --border-color: #E2E8F0;
-        --border-color-light: #F1F5F9;
-    }
-
     .card {
         background: var(--card-bg);
         border: none;
@@ -89,7 +75,7 @@
         min-height: 440px;
     }
 
-    /* Left Panel - Date Details */
+    /* Left Panel - Selected Date Information */
     .calendar-left-panel {
         background: var(--card-bg);
         padding: 1.25rem;
@@ -99,6 +85,7 @@
         border-right: 1px solid var(--border-color);
         height: 440px;
         min-height: 440px;
+        overflow-y: auto;
     }
 
     .calendar-left-panel .panel-header {
@@ -115,14 +102,14 @@
 
     .panel-header h5 {
         margin: 0;
-        color: var(--navy);
+        color: var(--text-primary);
         font-weight: 600;
     }
 
     .date-number {
         font-size: 3rem;
         font-weight: 700;
-        color: var(--navy);
+        color: var(--text-primary);
         line-height: 1;
     }
 
@@ -152,28 +139,85 @@
         margin-bottom: 0.25rem;
     }
 
-    .detail-value {
-        font-size: 1.1rem;
+    .schedule-session-item {
+        background: var(--bg-light);
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        padding: 0.6rem 0.85rem;
+        margin-bottom: 0.45rem;
+        cursor: default;
+        transition: all 0.2s ease;
+    }
+
+    .schedule-session-item .session-time {
         font-weight: 600;
-        color: var(--navy);
-        margin-bottom: 0.25rem;
+        color: var(--text-primary);
+        font-size: 1rem;
+    }
+
+    .schedule-session-item .session-associate {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+    }
+
+    .schedule-session-item .session-slots {
+        margin-top: 0.25rem;
     }
 
     .slots-badge {
         background: var(--light-blue);
-        color: var(--navy);
+        color: var(--text-primary);
         border-radius: 1rem;
-        padding: 0.375rem 0.875rem;
-        font-size: 0.9rem;
+        padding: 0.25rem 0.625rem;
+        font-size: 0.8rem;
         font-weight: 500;
         display: inline-block;
+    }
+
+    .slot-badge-available { background: rgba(66, 158, 189, 0.15); color: var(--medium-blue); }
+    .slot-badge-booked { background: rgba(242, 127, 12, 0.15); color: var(--orange); }
+
+    .action-btn {
+        background: var(--medium-blue);
+        color: var(--badge-text-light);
+        border: none;
+        border-radius: 0.5rem;
+        padding: 0.5rem 0.85rem;
+        font-weight: 500;
+        font-size: 0.8rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        min-height: 32px;
+    }
+
+    .action-btn:hover {
+        background: var(--navy);
+    }
+
+    .action-btn-secondary {
+        background: var(--border-color);
+        color: var(--text-primary);
+    }
+
+    .action-btn-secondary:hover {
+        background: var(--text-muted);
+        color: var(--badge-text-light);
+    }
+
+    .action-btn-sm {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.75rem;
+        min-height: 28px;
     }
 
     .no-appointment-msg {
         text-align: center;
         padding: 1.5rem 1rem;
         color: var(--text-muted);
-        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -186,49 +230,13 @@
         margin-bottom: 0.75rem;
     }
 
-    .schedule-session-item {
-        background: var(--bg-light);
-        border: 1px solid var(--border-color);
-        border-radius: 0.5rem;
-        padding: 0.5rem 0.75rem;
-        margin-bottom: 0.375rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .schedule-session-item:hover {
-        border-color: var(--medium-blue);
-        background: var(--card-bg);
-    }
-
-    .schedule-session-item.selected {
-        border-color: var(--medium-blue);
-        background: var(--card-bg);
-        box-shadow: 0 0 0 2px rgba(66, 158, 189, 0.3);
-    }
-
-    .session-time {
-        font-weight: 600;
-        color: var(--navy);
-        font-size: 1rem;
-    }
-
-    .session-associate {
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        margin-top: 0.25rem;
-    }
-
-    .session-slots {
-        margin-top: 0.375rem;
-    }
-
     /* Right Panel - Calendar */
     .calendar-right-panel {
         flex: 1;
         padding: 1.5rem;
         height: 440px;
         min-height: 440px;
+        overflow-y: auto;
     }
 
     .calendar-header {
@@ -257,38 +265,41 @@
         justify-content: center;
         cursor: pointer;
         transition: all 0.2s ease;
-        color: var(--navy);
+        color: var(--text-primary);
         font-size: 1.1rem;
     }
 
     .calendar-nav-btn:hover {
         background: var(--medium-blue);
-        color: #FFFFFF;
+        color: var(--badge-text-light);
     }
 
     .calendar-month-year {
         font-size: 1.25rem;
         font-weight: 600;
-        color: var(--navy);
+        color: var(--text-primary);
         min-width: 180px;
         text-align: center;
     }
 
-    .calendar-today-btn {
+    .calendar-legend-btn {
         background: var(--light-blue);
-        color: var(--navy);
+        color: var(--text-primary);
         border: none;
         border-radius: 0.5rem;
-        padding: 0.5rem 1rem;
-        font-size: 0.875rem;
+        padding: 0.4rem 0.85rem;
+        font-size: 0.8rem;
         font-weight: 500;
         cursor: pointer;
         transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
     }
 
-    .calendar-today-btn:hover {
+    .calendar-legend-btn:hover {
         background: var(--medium-blue);
-        color: #FFFFFF;
+        color: var(--badge-text-light);
     }
 
     /* Fixed 7-column calendar grid */
@@ -308,7 +319,7 @@
     }
 
     .calendar-day-header {
-        background: var(--navy);
+        background: #0077b6;
         color: #FFFFFF;
         padding: 0.5rem;
         text-align: center;
@@ -337,7 +348,7 @@
     .calendar-day-number {
         font-weight: 500;
         font-size: 0.9rem;
-        color: var(--navy);
+        color: var(--text-primary);
     }
 
     .calendar-day.other-month {
@@ -373,14 +384,30 @@
         background: var(--medium-blue);
     }
 
+    .calendar-day.booked .calendar-day-number {
+        color: var(--orange);
+        font-weight: 600;
+    }
+
+    .calendar-day.booked::before {
+        content: '';
+        position: absolute;
+        bottom: 4px;
+        right: 4px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--orange);
+    }
+
     .calendar-day.selected {
         background: var(--medium-blue);
-        color: #FFFFFF;
+        color: var(--badge-text-light);
         cursor: default;
     }
 
     .calendar-day.selected .calendar-day-number {
-        color: #FFFFFF;
+        color: var(--badge-text-light);
         font-weight: 700;
     }
 
@@ -392,11 +419,21 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: #FFFFFF;
+        background: var(--badge-text-light);
+    }
+
+    .calendar-day:not(.other-month):hover {
+        background: rgba(66, 158, 189, 0.05);
+        cursor: pointer;
     }
 
     .calendar-day.available:hover {
         background: rgba(66, 158, 189, 0.1);
+        cursor: pointer;
+    }
+
+    .calendar-day.booked:hover {
+        background: rgba(242, 127, 12, 0.1);
         cursor: pointer;
     }
 
@@ -430,21 +467,39 @@
 @section('content')
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <div>
-        <h1 class="h2 mb-1" style="color: var(--navy); font-weight: 700;">Calendar</h1>
-        <p class="text-muted mb-0">View your appointments and availability schedule</p>
+        <h1 class="h2 mb-1" style="color: var(--text-primary); font-weight: 700;">Manage Availability</h1>
+        <p class="text-muted mb-0">Manage your availability schedule</p>
     </div>
 </div>
 
+@if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+@if ($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
 <div class="calendar-component">
-    <!-- Left Panel - Selected Date Information -->
+    <!-- Left Panel - Selected Date Management -->
     <div class="calendar-left-panel">
-        <div class="panel-header">
-            <h5><i class="bi bi-info-circle me-2"></i>Selected Date</h5>
+        <div class="panel-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Selected Date</h5>
         </div>
         <div id="selectedDateInfo">
             <div class="no-appointment-msg">
                 <i class="bi bi-calendar-check"></i>
-                <p class="mb-0">Select a date to view schedule details.</p>
+                <p class="mb-0">Select a date to manage availability.</p>
             </div>
         </div>
     </div>
@@ -461,7 +516,9 @@
                     <i class="bi bi-chevron-right"></i>
                 </button>
             </div>
-            <button type="button" class="calendar-today-btn" id="todayBtn">Today</button>
+            <button type="button" class="calendar-legend-btn" data-bs-toggle="modal" data-bs-target="#legendModal">
+                <i class="bi bi-info-lg"></i> Legend
+            </button>
         </div>
 
         <div class="calendar-weekday-header">
@@ -475,13 +532,94 @@
         <div class="calendar-grid" id="calendarGrid"></div>
     </div>
 </div>
+
+<!-- Add Availability Modal -->
+<div class="modal fade" id="addAvailabilityModal" tabindex="-1" aria-labelledby="addAvailabilityModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background: var(--medium-blue); color: var(--badge-text-light);">
+                <h5 class="modal-title" id="addAvailabilityModalLabel">
+                    <i class="bi bi-plus-circle me-2"></i>Add Availability
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{{ route('guidance.availability.store') }}">
+                @csrf
+                <div class="modal-body">
+                    <input type="hidden" name="available_date" id="add_available_date">
+                    <div class="mb-3">
+                        <label class="form-label">Date</label>
+                        <input type="text" class="form-control" id="add_date_display" readonly>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="add_start_time" class="form-label">Start Time <span class="text-danger">*</span></label>
+                            <input type="time" class="form-control" id="add_start_time" name="start_time" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="add_end_time" class="form-label">End Time <span class="text-danger">*</span></label>
+                            <input type="time" class="form-control" id="add_end_time" name="end_time" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="add_slot_duration" class="form-label">Slot Duration (minutes) <span class="text-danger">*</span></label>
+                        <select class="form-select" id="add_slot_duration" name="slot_duration" required>
+                            <option value="15">15 minutes</option>
+                            <option value="30" selected>30 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="60">60 minutes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Availability</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Legend Modal -->
+<div class="modal fade" id="legendModal" tabindex="-1" aria-labelledby="legendModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background: var(--navy); color: var(--badge-text-light);">
+                <h5 class="modal-title" id="legendModalLabel">
+                    <i class="bi bi-info-circle me-2"></i>Availability Legend
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex flex-column gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded" style="width: 16px; height: 16px; background: var(--medium-blue);"></div>
+                        <span class="small">Available â€” has availability with open slots</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded" style="width: 16px; height: 16px; background: var(--orange);"></div>
+                        <span class="small">Booked â€” has appointments scheduled</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded" style="width: 16px; height: 16px; background: var(--yellow); border: 2px solid var(--medium-blue);"></div>
+                        <span class="small">Today</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded" style="width: 16px; height: 16px; background: var(--medium-blue); border: 2px solid var(--navy);"></div>
+                        <span class="small">Selected Date</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
 <script>
-    // Available dates data passed from PHP
-    const availableDatesMap = @json($availableDatesMap);
-    const appointmentsMap = @json($appointmentsMap);
+    // Availability data passed from PHP
+    const availabilityMap = @json($availabilityMap ?? []);
+    const appointmentsMap = @json($appointmentsMap ?? []);
 
     document.addEventListener('DOMContentLoaded', function() {
         let currentMonth = new Date().getMonth();
@@ -490,6 +628,9 @@
 
         const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
                            'July', 'August', 'September', 'October', 'November', 'December'];
+
+        const addModalEl = document.getElementById('addAvailabilityModal');
+        const addModal = new bootstrap.Modal(addModalEl);
 
         function renderCalendar() {
             const monthYearDisplay = document.getElementById('currentMonthYear');
@@ -529,13 +670,23 @@
                     dayEl.classList.add('selected');
                 }
 
-                const dateData = availableDatesMap[dayStr];
-                if (dateData && dateData.slotCount > 0) {
-                    dayEl.classList.add('available');
-                    dayEl.addEventListener('click', function() {
-                        selectDate(day, dayStr);
-                    });
+                const dateData = availabilityMap[dayStr];
+                const apptData = appointmentsMap[dayStr];
+                if (dateData && dateData.length > 0) {
+                    const hasBooked = dateData.some(function(s) { return s.is_booked; });
+                    if (hasBooked) {
+                        dayEl.classList.add('booked');
+                    } else {
+                        dayEl.classList.add('available');
+                    }
                 }
+                if (apptData && apptData.length > 0 && !(dateData && dateData.length > 0)) {
+                    dayEl.classList.add('booked');
+                }
+
+                dayEl.addEventListener('click', function() {
+                    selectDate(day, dayStr);
+                });
 
                 dayEl.innerHTML = '<span class="calendar-day-number">' + d + '</span>';
                 calendarDays.appendChild(dayEl);
@@ -579,10 +730,8 @@
 
         function updateSelectedDateInfo(dateObj, dateStr) {
             const panel = document.getElementById('selectedDateInfo');
-            const dateData = availableDatesMap[dateStr];
+            const dateData = availabilityMap[dateStr] || [];
             const apptData = appointmentsMap[dateStr] || [];
-
-            panel.innerHTML = '';
 
             let contentHtml = `
                 <div class="date-number">${dateObj.getDate()}</div>
@@ -590,25 +739,38 @@
                 <div class="date-full">${dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
             `;
 
-            let hasContent = false;
+            if (dateData.length > 0) {
+                contentHtml += '<div class="detail-section"><div class="detail-label">Availability Sessions</div></div>';
 
-            if (dateData && dateData.slotCount > 0) {
-                hasContent = true;
-                contentHtml += '<div class="detail-section"><div class="detail-label">Availability</div></div>';
+                dateData.forEach(function(session) {
+                    const editUrl = '{{ url('/') }}/guidance/availability/' + session.availability_id + '/edit';
+                    let actionButtons = `<a href="${editUrl}" class="action-btn action-btn-sm action-btn-secondary" title="Edit"><i class="bi bi-pencil"></i></a>`;
+                    if (!session.is_booked) {
+                        const deleteUrl = '{{ url('/') }}/guidance/availability/' + session.availability_id;
+                        actionButtons += `<button type="button" class="action-btn action-btn-sm action-btn-secondary" title="Delete" onclick="deleteAvailability('${deleteUrl}')"><i class="bi bi-trash"></i></button>`;
+                    }
 
-                const avHtml = `
-                    <div class="schedule-session-item">
-                        <div class="session-time">${dateData.availabilityData[0].formatted_time}</div>
-                        <div class="session-slots">
-                            <span class="slots-badge">${dateData.slotCount} ${dateData.slotCount === 1 ? 'slot' : 'slots'} available</span>
+                    contentHtml += `
+                        <div class="schedule-session-item">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <div class="session-time">${session.start_time} - ${session.end_time}</div>
+                                    <div class="session-associate">Duration: ${session.slot_duration} min</div>
+                                    <div class="session-slots">
+                                        <span class="slots-badge slot-badge-available">${session.available_slots} available</span>
+                                        <span class="slots-badge slot-badge-booked">${session.booked_slots} booked</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column gap-1">
+                                    ${actionButtons}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                `;
-                contentHtml += avHtml;
+                    `;
+                });
             }
 
             if (apptData.length > 0) {
-                hasContent = true;
                 contentHtml += '<div class="detail-section"><div class="detail-label">Appointments</div></div>';
 
                 apptData.forEach(function(appt) {
@@ -621,38 +783,91 @@
                         'reschedule_requested': '#F27F0C',
                         'rescheduled': '#053F5C'
                     };
-                    const statusColor = statusColors[appt.status] || '#053F5C';
+                    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                    const statusColorMap = isDark ? {
+                        'pending': '#00B4D8',
+                        'approved': '#0077B6',
+                        'completed': '#21db3d',
+                        'cancelled': '#db213a',
+                        'rejected': '#db213a',
+                        'reschedule_requested': '#90E0EF',
+                        'rescheduled': '#03045E'
+                    } : statusColors;
+                    const statusColor = statusColorMap[appt.status.toLowerCase()] || (isDark ? '#03045E' : '#053F5C');
 
                     contentHtml += `
                         <div class="schedule-session-item">
-                            <div class="d-flex justify-content-space-between align-items-start">
+                            <div class="d-flex justify-content-between align-items-start">
                                 <div class="flex-grow-1">
                                     <div class="session-time">${appt.student_name}</div>
-                                    <div class="session-associate">${new Date(appt.time.split(' - ')[0]).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} - ${appt.time.split(' - ')[1] || ''}</div>
+                                    <div class="session-associate">${appt.time}</div>
                                 </div>
-                                <span class="slots-badge" style="background: ${statusColor}; color: #FFFFFF;">${appt.status_label}</span>
+                                <span class="slots-badge" style="background: ${statusColor}; color: var(--badge-text-light);">${appt.status_label}</span>
                             </div>
                         </div>
                     `;
                 });
             }
 
-            if (hasContent) {
-                const contentDiv = document.createElement('div');
-                contentDiv.innerHTML = contentHtml;
-                panel.appendChild(contentDiv);
-            } else {
-                panel.innerHTML = `
-                    <div class="date-number">${dateObj.getDate()}</div>
-                    <div class="date-day">${getDayName(dateObj.getDay())}</div>
-                    <div class="date-full">${dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
+            if (dateData.length === 0 && apptData.length === 0) {
+                contentHtml += `
                     <div class="no-appointment-msg">
                         <i class="bi bi-calendar-x"></i>
-                        <p class="mt-2 mb-0">No available appointments on this date.</p>
+                        <p class="mt-2 mb-0">No availability scheduled for this date.</p>
                     </div>
                 `;
             }
+
+            if (dateData.length === 0) {
+                contentHtml += `
+                    <div class="detail-section" style="margin-top: auto;">
+                        <button type="button" class="action-btn w-100" onclick="openAddModal('${dateStr}')" style="margin-top: 0.5rem;">
+                            <i class="bi bi-plus-circle"></i>Add Availability
+                        </button>
+                    </div>
+                `;
+            }
+
+            panel.innerHTML = contentHtml;
         }
+
+        window.openAddModal = function(dateStr) {
+            if (!dateStr) {
+                if (selectedDateStr) {
+                    dateStr = selectedDateStr;
+                } else {
+                    alert('Please select a date first.');
+                    return;
+                }
+            }
+            document.getElementById('add_available_date').value = dateStr;
+            const displayDate = new Date(dateStr + 'T00:00:00');
+            document.getElementById('add_date_display').value = displayDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            addModal.show();
+        };
+
+        window.deleteAvailability = function(deleteUrl) {
+            if (!confirm('Delete this availability?')) return;
+
+            fetch(deleteUrl, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert(data.message || 'Failed to delete availability.');
+                }
+            })
+            .catch(error => {
+                alert('Failed to delete availability.');
+            });
+        };
 
         // Navigation handlers
         document.getElementById('prevMonth').addEventListener('click', function() {
@@ -670,13 +885,6 @@
                 currentMonth = 0;
                 currentYear++;
             }
-            renderCalendar();
-        });
-
-        document.getElementById('todayBtn').addEventListener('click', function() {
-            const now = new Date();
-            currentMonth = now.getMonth();
-            currentYear = now.getFullYear();
             renderCalendar();
         });
 

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', ' - Appointment Status Report')
 
@@ -40,7 +40,7 @@
                             @foreach($statuses as $status)
                                 <tr>
                                     <td>
-                                        <span class="badge me-2" style="background: {{ $status->color ?? '#64748B' }}; color: #053F5C;">{{ $status->label }}</span>
+                                        <span class="badge me-2" style="background: {{ $status->color ?? '#64748B' }}; color: var(--badge-text-light);">{{ $status->label }}</span>
                                     </td>
                                     <td>{{ $status->appointments_count }}</td>
                                     <td>

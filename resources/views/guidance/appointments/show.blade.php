@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', ' - Appointment Details')
 
@@ -15,7 +15,7 @@
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                 <h5 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Appointment Information</h5>
-                        <span class="badge fs-6" style="background: {{ $appointment->status->color ?? '#64748B' }}; color: #053F5C;">{{ $appointment->status->label }}</span>
+                        <span class="badge fs-6" style="background: {{ $appointment->status->color ?? '#64748B' }}; color: var(--badge-text-light);">{{ $appointment->status->label }}</span>
             </div>
             <div class="card-body">
                 <dl class="row">
@@ -44,7 +44,7 @@
 
                     <dt class="col-sm-3">Status</dt>
                     <dd class="col-sm-9">
-                <span class="badge fs-6" style="background: {{ $appointment->status->color ?? '#64748B' }}; color: #053F5C;">{{ $appointment->status->label }}</span>
+                <span class="badge fs-6" style="background: {{ $appointment->status->color ?? '#64748B' }}; color: var(--badge-text-light);">{{ $appointment->status->label }}</span>
                     </dd>
 
                     @if($appointment->approved_at)
@@ -75,7 +75,7 @@
                 <div class="card-body">
                     <div class="mb-3">
                         @for($i = 1; $i <= 5; $i++)
-                            <i class="bi bi-star{{ $i <= $appointment->feedback->rating ? '-fill' : ''}}" style="{{ $i <= $appointment->feedback->rating ? 'color: #F7AD19;' : 'color: var(--navy); opacity: 0.4;' }}" fs-4"></i>
+                            <i class="bi bi-star{{ $i <= $appointment->feedback->rating ? '-fill' : ''}}" style="{{ $i <= $appointment->feedback->rating ? 'color: var(--yellow);' : 'color: var(--text-primary); opacity: 0.4;' }}" fs-4"></i>
                         @endfor
                     </div>
                     <p>{{ $appointment->feedback->comments }}</p>

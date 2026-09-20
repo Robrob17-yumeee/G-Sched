@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', ' - Student Report')
 
@@ -60,7 +60,7 @@
                                 <td>{{ $student->email }}</td>
                                 <td>{{ $student->phone ?: '-' }}</td>
                                 <td>{{ $student->student_appointments_count }}</td>
-                                <td><span class="badge" style="background: {{ $student->status === 'active' ? '#9FE7F5' : '#64748B' }}; color: #053F5C;">{{ ucfirst($student->status) }}</span></td>
+                                <td><span class="badge" style="background: {{ $student->status === 'active' ? '#9FE7F5' : '#64748B' }}; color: var(--badge-text-light);">{{ ucfirst($student->status) }}</span></td>
                                 <td>{{ $student->created_at->format('M d, Y') }}</td>
                             </tr>
                         @endforeach

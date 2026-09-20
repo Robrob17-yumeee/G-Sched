@@ -1,15 +1,16 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', ' - Login')
+
+@php
+    $hide_navbar = true;
+@endphp
 
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-6 col-lg-4">
-        <div class="card shadow">
-            <div class="card-header" style="background: #053F5C; color: #FFFFFF; text-center">
-                <h4 class="mb-0"><i class="bi bi-calendar-check me-2"></i>G-SCHED Login</h4>
-            </div>
-            <div class="card-body p-4">
+            <div class="card shadow">
+                <div class="card-body p-4">
                 @if(session('error'))
                     <div class="alert alert-danger">{{ session('error') }}</div>
                 @endif

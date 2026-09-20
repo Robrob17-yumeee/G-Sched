@@ -73,6 +73,8 @@ Route::middleware(['auth', 'role:guidance_associate'])->prefix('guidance')->name
     Route::post('/requests/{appointment}/cancel', [GuidanceAppointmentController::class, 'cancel'])->name('requests.cancel');
     Route::post('/requests/{appointment}/complete', [GuidanceAppointmentController::class, 'complete'])->name('requests.complete');
     Route::post('/requests/{appointment}/remind', [GuidanceAppointmentController::class, 'sendReminder'])->name('requests.remind');
+    Route::post('/requests/{appointment}/severity', [GuidanceAppointmentController::class, 'assignSeverity'])->name('requests.severity');
+    Route::post('/requests/{appointment}/remind', [GuidanceAppointmentController::class, 'sendReminder'])->name('requests.remind');
     
     Route::get('/appointments', [GuidanceAppointmentController::class, 'appointments'])->name('appointments');
     Route::get('/appointments/{appointment}', [GuidanceAppointmentController::class, 'show'])->name('appointments.show');
@@ -84,7 +86,6 @@ Route::middleware(['auth', 'role:guidance_associate'])->prefix('guidance')->name
     Route::delete('/availability/{availability}', [AvailabilityController::class, 'destroy'])->name('availability.destroy');
     
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
-    Route::get('/calendar/events', [CalendarController::class, 'events'])->name('calendar.events');
     
     Route::get('/history', [GuidanceAppointmentController::class, 'history'])->name('history');
     

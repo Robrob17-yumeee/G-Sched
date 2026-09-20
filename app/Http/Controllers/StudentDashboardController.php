@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\AppointmentStatus;
+use App\Models\Feedback;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -31,13 +32,13 @@ class StudentDashboardController extends Controller
             ->where('appointment_status_id', $approvedStatus->id)
             ->count();
             
-        $notifications = $user->notifications()->latest()->take(5)->get();
+        $finishedFeedbackCount = Feedback::where('student_id', $user->id)->count();
 
         return view('student.dashboard', compact(
             'nextAppointment',
             'pendingCount',
             'approvedCount',
-            'notifications'
+            'finishedFeedbackCount'
         ));
     }
 }

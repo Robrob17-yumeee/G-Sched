@@ -1,21 +1,7 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('styles')
 <style>
-    :root {
-        --navy: #053F5C;
-        --medium-blue: #429EBD;
-        --light-blue: #9FE7F5;
-        --yellow: #F7AD19;
-        --orange: #F27F0C;
-        --bg-light: #F7FAFC;
-        --card-bg: #FFFFFF;
-        --text-primary: #053F5C;
-        --text-muted: #64748B;
-        --border-color: #E2E8F0;
-        --border-color-light: #F1F5F9;
-    }
-    
     body {
         background-color: var(--bg-light);
         font-family: 'Inter', 'Roboto', sans-serif;
@@ -82,7 +68,7 @@
         letter-spacing: 0.025em;
     }
     
-    .type-badge.feedback { background: rgba(247, 173, 25, 0.15); color: var(--navy); }
+    .type-badge.feedback { background: rgba(247, 173, 25, 0.15); color: var(--text-primary); }
     
     .feedback-item {
         padding: 1rem 1.5rem;
@@ -118,7 +104,7 @@
 
     .sqd-tag {
         background: rgba(66, 158, 189, 0.15);
-        color: var(--navy);
+        color: var(--text-primary);
         padding: 0.25rem 0.5rem;
         border-radius: 0.375rem;
         font-size: 0.7rem;
@@ -148,7 +134,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div>
-                    <h1 class="h2 mb-1" style="color: var(--navy); font-weight: 700;">Feedback</h1>
+                    <h1 class="h2 mb-1" style="color: var(--text-primary); font-weight: 700;">Feedback</h1>
                     <p class="text-muted mb-0">Share your experience and view submitted feedback</p>
                 </div>
             </div>
@@ -160,7 +146,7 @@
         <div class="col-12 col-lg-6">
             <div class="card h-100">
                 <div class="card-header">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                    <h5 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                         <i class="bi bi-chat-text me-2" style="color: var(--yellow);"></i>Appointments Awaiting Feedback
                     </h5>
                 </div>
@@ -180,8 +166,8 @@
                         @endforeach
                     @else
                         <div class="text-center py-5">
-                            <i class="bi bi-check-circle fs-1" style="color: #429EBD;"></i>
-                            <h5 class="mt-3" style="color: var(--navy);">All Caught Up!</h5>
+                            <i class="bi bi-check-circle fs-1" style="color: var(--medium-blue);"></i>
+                            <h5 class="mt-3" style="color: var(--text-primary);">All Caught Up!</h5>
                             <p class="text-muted">No pending feedback at the moment.</p>
                         </div>
                     @endif
@@ -193,7 +179,7 @@
         <div class="col-12 col-lg-6">
             <div class="card h-100">
                 <div class="card-header">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                    <h5 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                         <i class="bi bi-chat-text me-2" style="color: var(--medium-blue);"></i>Submitted Feedback
                     </h5>
                 </div>
@@ -232,7 +218,7 @@
                     @else
                         <div class="text-center py-5">
                             <i class="bi bi-chat-text fs-1" style="color: var(--text-muted); opacity: 0.5;"></i>
-                            <h5 class="mt-3" style="color: var(--navy);">No Feedback Submitted</h5>
+                            <h5 class="mt-3" style="color: var(--text-primary);">No Feedback Submitted</h5>
                             <p class="text-muted">Your submitted feedback will appear here.</p>
                         </div>
                     @endif

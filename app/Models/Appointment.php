@@ -14,6 +14,7 @@ class Appointment extends Model
         'start_time',
         'end_time',
         'purpose',
+        'concern_category',
         'severity',
         'notes',
         'cancellation_reason',
@@ -110,5 +111,26 @@ class Appointment extends Model
     public function isStudentInfoHiddenFromGuidance()
     {
         return $this->isHighSeverity();
+    }
+
+    public function isAssigned()
+    {
+        return $this->guidance_associate_id !== null;
+    }
+
+    public function severityLabel(): string
+    {
+        return match($this->severity) {
+            'not_assessed' => 'Not Yet Assessed',
+            'low' => 'Low',
+            'moderate' => 'Moderate',
+            'high' => 'High',
+            default => 'Not Yet Assessed',
+        };
+    }
+
+    public function isSeverityAssessed(): bool
+    {
+        return in_array($this->severity, ['low', 'moderate', 'high']);
     }
 }

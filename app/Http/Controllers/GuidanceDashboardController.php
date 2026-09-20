@@ -49,8 +49,6 @@ public function index()
         $availableSlots = Availability::where('status', 'available')
             ->where('available_date', '>=', Carbon::today())
             ->count();
-        
-        $notifications = $user->notifications()->latest()->take(5)->get();
 
         return view('guidance.dashboard', compact(
             'pendingRequests',
@@ -58,8 +56,7 @@ public function index()
             'upcomingAppointments',
             'completedCount',
             'cancelledCount',
-            'availableSlots',
-            'notifications'
+            'availableSlots'
         ));
     }
 }

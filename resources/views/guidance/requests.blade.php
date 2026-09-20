@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', ' - Appointment Requests')
 
@@ -28,9 +28,9 @@
                             <tr>
                                 <td>
                                     @if($request->isHighSeverity() && !auth()->user()->isAdmin())
-                                        <strong style="color: #F7AD19;">Confidential (High Severity)</strong>
+                                        <strong style="color: var(--orange);">Confidential (High Severity)</strong>
                                         <br><small class="text-muted">Student identity hidden</small>
-                                        <span class="badge" style="background: #F27F0C; color: var(--navy);" >HIGH</span>
+                                        <span class="badge" style="background: var(--orange); color: var(--badge-text-light);" >HIGH</span>
                                     @else
                                         <strong>{{ $request->student->full_name }}</strong>
                                         <br><small class="text-muted">{{ $request->student->email }}</small>
@@ -38,7 +38,7 @@
                                             <br><small class="text-muted">ID: {{ $request->student->student_id }}</small>
                                         @endif
                                         @if($request->isHighSeverity())
-                                            <span class="badge" style="background: #F27F0C; color: var(--navy);" >HIGH</span>
+                                            <span class="badge" style="background: var(--orange); color: var(--badge-text-light);" >HIGH</span>
                                         @endif
                                     @endif
                                 </td>
@@ -46,7 +46,7 @@
                                 <td>{{ $request->formatted_time }}</td>
                                 <td>{{ Str::limit($request->purpose, 50) }}</td>
                                 <td>
-                                    <span class="badge" style="background: {{ $request->status->color ?? '#F7AD19' }}; color: #053F5C;">
+                                    <span class="badge" style="background: {{ $request->status->color ?? '#F7AD19' }}; color: var(--badge-text-light);">
                                         {{ $request->status->label }}
                                     </span>
                                 </td>

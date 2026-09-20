@@ -1,21 +1,7 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('styles')
 <style>
-    :root {
-        --navy: #053F5C;
-        --medium-blue: #429EBD;
-        --light-blue: #9FE7F5;
-        --yellow: #F7AD19;
-        --orange: #F27F0C;
-        --bg-light: #F7FAFC;
-        --card-bg: #FFFFFF;
-        --text-primary: #053F5C;
-        --text-muted: #64748B;
-        --border-color: #E2E8F0;
-        --border-color-light: #F1F5F9;
-    }
-    
     body {
         background-color: var(--bg-light);
         font-family: 'Inter', 'Roboto', sans-serif;
@@ -54,7 +40,7 @@
     
     .notification-badge {
         background: var(--orange);
-        color: var(--navy);
+        color: var(--text-primary);
         font-size: 0.7rem;
         font-weight: 700;
         border-radius: 9999px;
@@ -69,19 +55,24 @@
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.025em;
+        color: #FFFFFF;
     }
     
-    .type-badge.appointment_request { background: #274be8; color: #FFFFFF; }
-    .type-badge.appointment_approved { background: #21db3d; color: #FFFFFF; }
-    .type-badge.appointment_rejected { background: rgba(242, 127, 12, 0.15); color: var(--navy); }
-    .type-badge.appointment_cancelled { background: #db213a; color: #FFFFFF; }
-    .type-badge.appointment_rescheduled { background: rgba(5, 63, 92, 0.15); color: var(--navy); }
-    .type-badge.feedback { background: #ffbf00; color: #FFFFFF; }
-    .type-badge.appointment_request_high { background: rgba(242, 127, 12, 0.15); color: var(--navy); }
+     .type-badge.appointment_request { background: #274be8; }
+    .type-badge.appointment_approved { background: #21db3d; }
+    .type-badge.appointment_rejected { background: #db213a; }
+    .type-badge.appointment_cancelled { background: #db213a; }
+    .type-badge.appointment_rescheduled { background: rgba(5, 63, 92, 0.15); }
+    .type-badge.appointment_reminder { background: #429EBD; }
+    .type-badge.appointment_request_high { background: var(--orange); }
+    .type-badge.feedback { background: #ffbf00; }
+    .type-badge.case_assessed { background: #429EBD; }
+    .type-badge.case_high_severity { background: var(--orange); }
+    .type-badge.system { background: #64748B; }
     
     .btn-outline-custom {
         border: 2px solid var(--medium-blue);
-        color: var(--navy);
+        color: var(--text-primary);
         border-radius: 0.5rem;
         font-weight: 500;
         padding: 0.5rem 1rem;
@@ -90,7 +81,7 @@
     
     .btn-outline-custom:hover {
         background: var(--medium-blue);
-        color: #FFFFFF;
+        color: var(--badge-text-light);
     }
     
     .kpi-card {
@@ -113,7 +104,7 @@
         justify-content: center;
     }
     
-    .kpi-icon.notifications { background: rgba(159, 231, 245, 0.25); color: #429EBD; }
+    .kpi-icon.notifications { background: rgba(159, 231, 245, 0.25); color: var(--medium-blue); }
     
     .btn-icon {
         width: 36px;
@@ -130,13 +121,13 @@
     
     .btn-icon:hover {
         border-color: var(--medium-blue);
-        color: var(--navy);
+        color: var(--text-primary);
         background: rgba(66, 158, 189, 0.1);
     }
     
     .btn-icon.success:hover {
         border-color: var(--light-blue);
-        color: var(--navy);
+        color: var(--text-primary);
         background: rgba(159, 231, 245, 0.15);
     }
     
@@ -163,7 +154,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div>
-                    <h1 class="h2 mb-1" style="color: var(--navy); font-weight: 700;">Notifications</h1>
+                    <h1 class="h2 mb-1" style="color: var(--text-primary); font-weight: 700;">Notifications</h1>
                     <p class="text-muted mb-0">Stay updated with your appointment activities</p>
                 </div>
                 <div class="d-flex gap-2">
@@ -199,16 +190,7 @@
                             <div class="d-flex flex-column gap-2 align-items-end">
                                 <small class="notification-time">{{ $notification->created_at->diffForHumans() }}</small>
                                 <span class="type-badge {{ $notification->type }}">{{ ucfirst($notification->type) }}</span>
-                                @if(!$notification->is_read)
-                                <form method="POST" action="{{ route('student.notifications.read', $notification) }}" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn-icon success" title="Mark as read">
-                                        <i class="bi bi-check fs-5"></i>
-                                    </button>
-                                </form>
-                                <span class="notification-badge">New</span>
-                            @endif
-                        </div>
+                            </div>
                     </a>
                 @endforeach
                 <div class="card-footer bg-transparent border-top p-3" style="border-color: var(--border-color-light);">

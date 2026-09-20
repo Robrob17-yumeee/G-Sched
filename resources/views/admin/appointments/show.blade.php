@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', ' - Appointment Details')
 
@@ -15,7 +15,7 @@
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                 <h5 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Appointment Information</h5>
-                <span class="badge fs-6" style="background: {{ $appointment->status->color ?? '#64748B' }}; color: #053F5C;">{{ $appointment->status->label }}</span>
+                <span class="badge fs-6" style="background: {{ $appointment->status->color ?? '#64748B' }}; color: var(--badge-text-light);">{{ $appointment->status->label }}</span>
             </div>
             <div class="card-body">
                 <dl class="row">
@@ -24,8 +24,16 @@
 
                     <dt class="col-sm-3">Severity</dt>
                     <dd class="col-sm-9">
-                        <span class="badge fs-6" style="background: {{ $appointment->severity === 'high' ? '#F27F0C' : ($appointment->severity === 'medium' ? '#F7AD19' : '#429EBD') }}; color: #053F5C;">
-                            {{ ucfirst($appointment->severity) }}
+                        @php
+                            $severityColor = [
+                                'not_assessed' => '#94A3B8',
+                                'low' => '#429EBD',
+                                'moderate' => '#F7AD19',
+                                'high' => '#F27F0C',
+                            ][$appointment->severity] ?? '#94A3B8';
+                        @endphp
+                        <span class="badge fs-6" style="background: {{ $severityColor }}; color: var(--badge-text-light);">
+                            {{ $appointment->severityLabel() }}
                         </span>
                         @if($appointment->severity === 'high')
                             <span class="text-danger ms-2"><i class="bi bi-shield-lock me-1"></i>Confidential - Admin only</span>
@@ -54,7 +62,7 @@
 
                     <dt class="col-sm-3">Status</dt>
                     <dd class="col-sm-9">
-                <span class="badge fs-6" style="background: {{ $appointment->status->color ?? '#64748B' }}; color: #053F5C;">{{ $appointment->status->label }}</span>
+                <span class="badge fs-6" style="background: {{ $appointment->status->color ?? '#64748B' }}; color: var(--badge-text-light);">{{ $appointment->status->label }}</span>
                     </dd>
 
                     @if($appointment->approved_at)
@@ -135,7 +143,7 @@
                 <h5 class="mb-0"><i class="bi bi-person-badge me-2"></i>Guidance Associate</h5>
             </div>
             <div class="card-body text-center">
-                        <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 100px; height: 100px; background: rgba(159, 231, 245, 0.15); color: #429EBD;">
+                        <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 100px; height: 100px; background: rgba(159, 231, 245, 0.15); color: var(--medium-blue);">
                     <i class="bi bi-person-badge fs-1"></i>
                 </div>
                 <h5>{{ $appointment->guidanceAssociate->full_name ?? 'N/A' }}</h5>
@@ -151,7 +159,7 @@
                 <div class="card-body">
                     <div class="mb-3">
                         @for($i = 1; $i <= 5; $i++)
-                            <i class="bi bi-star{{ $i <= $appointment->feedback->rating ? '-fill' : ''}}" style="{{ $i <= $appointment->feedback->rating ? 'color: #F7AD19;' : 'color: var(--navy); opacity: 0.4;' }}" fs-4"></i>
+                            <i class="bi bi-star{{ $i <= $appointment->feedback->rating ? '-fill' : ''}}" style="{{ $i <= $appointment->feedback->rating ? 'color: var(--yellow);' : 'color: var(--text-primary); opacity: 0.4;' }}" fs-4"></i>
                         @endfor
                     </div>
                     <p>{{ $appointment->feedback->comments }}</p>

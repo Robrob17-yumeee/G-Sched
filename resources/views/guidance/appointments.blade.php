@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', ' - My Appointments')
 
@@ -27,12 +27,12 @@
                             <tr>
                                 <td>
                                     @if($appointment->isHighSeverity() && !auth()->user()->isAdmin())
-                                        <strong style="color: #F7AD19;">Confidential (High Severity)</strong>
-                                        <span class="badge" style="background: #F27F0C; color: var(--navy);">HIGH</span>
+                                        <strong style="color: var(--orange);">Confidential (High Severity)</strong>
+                                        <span class="badge" style="background: var(--orange); color: var(--text-primary);">HIGH</span>
                                     @else
                                         {{ $appointment->student->full_name }}
                                         @if($appointment->isHighSeverity())
-                                            <span class="badge" style="background: #F27F0C; color: var(--navy);">HIGH</span>
+                                            <span class="badge" style="background: var(--orange); color: var(--text-primary);">HIGH</span>
                                         @endif
                                     @endif
                                 </td>
@@ -40,7 +40,7 @@
                                 <td>{{ $appointment->formatted_time }}</td>
                                 <td>{{ Str::limit($appointment->purpose, 50) }}</td>
                                 <td>
-                                    <span class="badge" style="background: {{ $appointment->status->color ?? '#64748B' }}; color: #053F5C;">
+                                    <span class="badge" style="background: {{ $appointment->status->color ?? '#64748B' }}; color: var(--badge-text-light);">
                                         {{ $appointment->status->label }}
                                     </span>
                                 </td>

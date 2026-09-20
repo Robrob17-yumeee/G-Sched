@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActivityLog;
+use App\Models\Appointment;
 use App\Models\Availability;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -110,7 +111,7 @@ class AvailabilityController extends Controller
         return redirect()->route('guidance.availability')->with('success', 'Availability updated successfully!');
     }
 
-    public function destroy(Availability $availability)
+    public function destroy(Request $request, Availability $availability)
     {
         $this->authorizeAvailability($availability);
         
@@ -121,6 +122,10 @@ class AvailabilityController extends Controller
         $availability->delete();
 
         ActivityLog::log('DELETE_AVAILABILITY', "Deleted availability #{$availability->id}", 'Availability', Auth::id());
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Availability deleted successfully!']);
+        }
 
         return redirect()->route('guidance.availability')->with('success', 'Availability deleted successfully!');
     }
@@ -135,16 +140,88 @@ class AvailabilityController extends Controller
     // Admin methods
     public function adminIndex()
     {
-        $availabilities = Availability::with('guidanceAssociate')
+        $availabilities = Availability::whereHas('guidanceAssociate.role', function ($q) {
+            $q->where('name', 'guidance_associate');
+        })
+            ->with('guidanceAssociate')
             ->orderBy('available_date', 'desc')
             ->orderBy('start_time')
-            ->paginate(15);
+            ->get();
+
+        $appointments = Appointment::whereHas('guidanceAssociate.role', function ($q) {
+            $q->where('name', 'guidance_associate');
+        })
+            ->where('appointment_date', '>=', Carbon::today())
+            ->with(['student', 'status'])
+            ->orderBy('appointment_date')
+            ->get()
+            ->groupBy('appointment_date');
+
+        $availabilityMap = [];
+        foreach ($availabilities as $availability) {
+            $dateStr = $availability->available_date->format('Y-m-d');
+            $start = Carbon::parse($dateStr . ' ' . $availability->start_time->format('H:i'));
+            $end = Carbon::parse($dateStr . ' ' . $availability->end_time->format('H:i'));
+            $duration = $availability->slot_duration;
+
+            $totalSlots = 0;
+            $bookedSlots = 0;
+            $current = $start->copy();
+            while ($current->copy()->addMinutes($duration) <= $end) {
+                $slotEnd = $current->copy()->addMinutes($duration);
+                $totalSlots++;
+
+                $isBooked = Appointment::where('guidance_associate_id', $availability->guidance_associate_id)
+                    ->where('appointment_date', $dateStr)
+                    ->where('start_time', $current->format('H:i'))
+                    ->where('end_time', $slotEnd->format('H:i'))
+                    ->whereHas('status', function ($q) {
+                        $q->whereIn('name', ['pending', 'approved']);
+                    })
+                    ->exists();
+
+                if ($isBooked) {
+                    $bookedSlots++;
+                }
+
+                $current = $slotEnd;
+            }
+
+            $availabilityMap[$dateStr][] = [
+                'availability_id' => $availability->id,
+                'guidance_associate_id' => $availability->guidance_associate_id,
+                'guidance_associate_name' => $availability->guidanceAssociate ? $availability->guidanceAssociate->full_name : '',
+                'start_time' => $availability->start_time->format('g:i A'),
+                'end_time' => $availability->end_time->format('g:i A'),
+                'slot_duration' => $availability->slot_duration,
+                'status' => $availability->status,
+                'is_booked' => $availability->isBooked(),
+                'total_slots' => $totalSlots,
+                'available_slots' => $totalSlots - $bookedSlots,
+                'booked_slots' => $bookedSlots,
+            ];
+        }
+
+        $appointmentsMap = [];
+        foreach ($appointments as $date => $apps) {
+            $dateStr = Carbon::parse($date)->format('Y-m-d');
+            $appointmentsMap[$dateStr] = [];
+            foreach ($apps as $appt) {
+                $appointmentsMap[$dateStr][] = [
+                    'id' => $appt->id,
+                    'student_name' => $appt->student ? $appt->student->full_name : 'Unknown',
+                    'time' => $appt->start_time->format('g:i A') . ' - ' . $appt->end_time->format('g:i A'),
+                    'status' => $appt->status->name ?? '',
+                    'status_label' => $appt->status->label ?? '',
+                ];
+            }
+        }
 
         $guidanceAssociates = User::whereHas('role', function ($q) {
             $q->where('name', 'guidance_associate');
-        })->get();
+        })->orderBy('first_name')->get();
 
-        return view('admin.availability', compact('availabilities', 'guidanceAssociates'));
+        return view('admin.availability', compact('availabilities', 'availabilityMap', 'appointmentsMap', 'guidanceAssociates'));
     }
 
     public function adminStore(Request $request)

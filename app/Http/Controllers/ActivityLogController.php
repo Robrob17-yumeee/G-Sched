@@ -28,7 +28,7 @@ class ActivityLogController extends Controller
             $query->where('module', 'like', "%{$request->module}%");
         }
 
-        $logs = $query->latest()->paginate(50);
+        $logs = $query->latest()->paginate(5);
         $users = User::orderBy('first_name')->get();
 
         return view('admin.logs', compact('logs', 'users'));

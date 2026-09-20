@@ -1,21 +1,7 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('styles')
 <style>
-    :root {
-        --navy: #053F5C;
-        --medium-blue: #429EBD;
-        --light-blue: #9FE7F5;
-        --yellow: #F7AD19;
-        --orange: #F27F0C;
-        --bg-light: #F7FAFC;
-        --card-bg: #FFFFFF;
-        --text-primary: #053F5C;
-        --text-muted: #64748B;
-        --border-color: #E2E8F0;
-        --border-color-light: #F1F5F9;
-    }
-    
     body {
         background-color: var(--bg-light);
         font-family: 'Inter', 'Roboto', sans-serif;
@@ -110,14 +96,14 @@
         justify-content: center;
     }
     
-    .kpi-icon.users { background: rgba(66, 158, 189, 0.2); color: #429EBD; }
-    .kpi-icon.students { background: rgba(159, 231, 245, 0.2); color: #429EBD; }
-    .kpi-icon.guidance { background: rgba(159, 231, 245, 0.3); color: #429EBD; }
-    .kpi-icon.appointments { background: rgba(247, 173, 25, 0.2); color: #F7AD19; }
-    .kpi-icon.pending { background: rgba(247, 173, 25, 0.2); color: #F7AD19; }
-    .kpi-icon.approved { background: rgba(66, 158, 189, 0.2); color: #429EBD; }
-    .kpi-icon.completed { background: rgba(159, 231, 245, 0.2); color: #429EBD; }
-    .kpi-icon.cancelled { background: rgba(242, 127, 12, 0.25); color: #F27F0C; }
+    .kpi-icon.users { background: rgba(66, 158, 189, 0.2); color: var(--medium-blue); }
+    .kpi-icon.students { background: rgba(159, 231, 245, 0.2); color: var(--medium-blue); }
+    .kpi-icon.guidance { background: rgba(159, 231, 245, 0.3); color: var(--medium-blue); }
+    .kpi-icon.appointments { background: rgba(247, 173, 25, 0.2); color: var(--yellow); }
+    .kpi-icon.pending { background: rgba(247, 173, 25, 0.2); color: var(--yellow); }
+    .kpi-icon.approved { background: rgba(66, 158, 189, 0.2); color: var(--medium-blue); }
+    .kpi-icon.completed { background: rgba(159, 231, 245, 0.2); color: var(--medium-blue); }
+    .kpi-icon.cancelled { background: rgba(242, 127, 12, 0.25); color: var(--orange); }
     
     .chart-card {
         min-height: 280px;
@@ -130,10 +116,10 @@
     }
     
     .action-btn.primary {
-        background: #429EBD;
+        background: var(--medium-blue);
         border: none;
         border-radius: 0.75rem;
-        color: #FFFFFF;
+        color: var(--badge-text-light);
         padding: 1rem 0.875rem;
         text-decoration: none;
         transition: all 0.2s ease;
@@ -142,14 +128,14 @@
         background: var(--navy);
     }
     .action-btn.primary i {
-        color: #FFFFFF;
+        color: var(--badge-text-light);
     }
 
     .action-btn.primary-inverted {
         background: #FFFFFF;
         border: 1px solid var(--border-color);
         border-radius: 0.75rem;
-        color: #429EBD;
+        color: var(--medium-blue);
         padding: 1rem 0.875rem;
         text-decoration: none;
         transition: all 0.2s ease;
@@ -158,10 +144,10 @@
     .action-btn.primary-inverted:hover {
         border-color: var(--medium-blue);
         background: rgba(66, 158, 189, 0.05);
-        color: #429EBD;
+        color: var(--medium-blue);
     }
     .action-btn.primary-inverted i {
-        color: #429EBD;
+        color: var(--medium-blue);
     }
 
     .action-btn {
@@ -228,7 +214,7 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Total Users</p>
-                            <h2 class="mb-0" style="color: var(--navy); font-weight: 700;">{{ $totalUsers }}</h2>
+                            <h2 class="mb-0" style="color: var(--text-primary); font-weight: 700;">{{ $totalUsers }}</h2>
                         </div>
                         <div class="kpi-icon users">
                             <i class="bi bi-people-fill fs-4"></i>
@@ -244,7 +230,7 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Students</p>
-                            <h2 class="mb-0" style="color: var(--navy); font-weight: 700;">{{ $totalStudents }}</h2>
+                            <h2 class="mb-0" style="color: var(--text-primary); font-weight: 700;">{{ $totalStudents }}</h2>
                         </div>
                         <div class="kpi-icon students">
                             <i class="bi bi-mortarboard-fill fs-4"></i>
@@ -260,7 +246,7 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Guidance Associates</p>
-                            <h2 class="mb-0" style="color: var(--navy); font-weight: 700;">{{ $totalGuidance }}</h2>
+                            <h2 class="mb-0" style="color: var(--text-primary); font-weight: 700;">{{ $totalGuidance }}</h2>
                         </div>
                         <div class="kpi-icon guidance">
                             <i class="bi bi-person-badge-fill fs-4"></i>
@@ -276,7 +262,7 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Total Appointments</p>
-                            <h2 class="mb-0" style="color: var(--navy); font-weight: 700;">{{ $totalAppointments }}</h2>
+                            <h2 class="mb-0" style="color: var(--text-primary); font-weight: 700;">{{ $totalAppointments }}</h2>
                         </div>
                         <div class="kpi-icon appointments">
                             <i class="bi bi-calendar-check-fill fs-4"></i>
@@ -293,7 +279,7 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Pending</p>
-                            <h2 class="mb-0" style="color: var(--navy); font-weight: 700;">{{ $pendingAppointments }}</h2>
+                            <h2 class="mb-0" style="color: var(--text-primary); font-weight: 700;">{{ $pendingAppointments }}</h2>
                         </div>
                         <div class="kpi-icon pending">
                             <i class="bi bi-hourglass-split fs-4"></i>
@@ -309,7 +295,7 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Approved</p>
-                            <h2 class="mb-0" style="color: var(--navy); font-weight: 700;">{{ $approvedAppointments }}</h2>
+                            <h2 class="mb-0" style="color: var(--text-primary); font-weight: 700;">{{ $approvedAppointments }}</h2>
                         </div>
                         <div class="kpi-icon approved">
                             <i class="bi bi-check-circle-fill fs-4"></i>
@@ -325,7 +311,7 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Completed</p>
-                            <h2 class="mb-0" style="color: var(--navy); font-weight: 700;">{{ $completedAppointments }}</h2>
+                            <h2 class="mb-0" style="color: var(--text-primary); font-weight: 700;">{{ $completedAppointments }}</h2>
                         </div>
                         <div class="kpi-icon completed">
                             <i class="bi bi-check2-circle fs-4"></i>
@@ -341,7 +327,7 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Cancelled</p>
-                            <h2 class="mb-0" style="color: var(--navy); font-weight: 700;">{{ $cancelledAppointments }}</h2>
+                            <h2 class="mb-0" style="color: var(--text-primary); font-weight: 700;">{{ $cancelledAppointments }}</h2>
                         </div>
                         <div class="kpi-icon cancelled">
                             <i class="bi bi-x-circle fs-4"></i>
@@ -355,7 +341,7 @@
         <div class="col-12 col-lg-6">
             <div class="card chart-card">
                 <div class="card-header">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                    <h5 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                         <i class="bi bi-graph-up me-2" style="color: var(--medium-blue);"></i>Appointments per Month
                     </h5>
                 </div>
@@ -368,7 +354,7 @@
         <div class="col-12 col-lg-6">
             <div class="card chart-card">
                 <div class="card-header">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                    <h5 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                         <i class="bi bi-pie-chart me-2" style="color: var(--medium-blue);"></i>Appointment Status Distribution
                     </h5>
                 </div>
@@ -382,7 +368,7 @@
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header" style="border-bottom: 1px solid var(--border-color-light);">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                    <h5 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                         <i class="bi bi-graph-up-arrow me-2" style="color: var(--medium-blue);"></i>Analytics Overview
                     </h5>
                 </div>
@@ -392,7 +378,7 @@
                             <div class="chart-card">
                                 <div class="card h-100" style="border: none; box-shadow: none;">
                                     <div class="card-header" style="background: transparent; border-bottom: 1px solid var(--border-color-light); padding: 1rem 1.25rem;">
-                                        <h6 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                                        <h6 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                                             <i class="bi bi-building me-2" style="color: var(--medium-blue);"></i>Appointment Volume by School
                                         </h6>
                                     </div>
@@ -406,7 +392,7 @@
                             <div class="chart-card">
                                 <div class="card h-100" style="border: none; box-shadow: none;">
                                     <div class="card-header" style="background: transparent; border-bottom: 1px solid var(--border-color-light); padding: 1rem 1.25rem;">
-                                        <h6 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                                        <h6 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                                             <i class="bi bi-people me-2" style="color: var(--medium-blue);"></i>Age Range Distribution
                                         </h6>
                                     </div>
@@ -420,7 +406,7 @@
                             <div class="chart-card">
                                 <div class="card h-100" style="border: none; box-shadow: none;">
                                     <div class="card-header" style="background: transparent; border-bottom: 1px solid var(--border-color-light); padding: 1rem 1.25rem;">
-                                        <h6 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                                        <h6 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                                             <i class="bi bi-gender-ambiguous me-2" style="color: var(--medium-blue);"></i>Gender Distribution
                                         </h6>
                                     </div>
@@ -439,7 +425,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                    <h5 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                         <i class="bi bi-lightning me-2" style="color: var(--yellow);"></i>Quick Actions
                     </h5>
                 </div>
@@ -447,26 +433,26 @@
                     <div class="row g-3">
                         <div class="col-12 col-sm-6 col-lg-3">
                             <a href="{{ route('admin.users.create') }}" class="action-btn primary-inverted d-block h-100">
-                                <i class="bi bi-person-plus quick-action-icon" style="color: #429EBD;"></i>
-                                <span class="fw-medium d-block" style="color: #429EBD;">Add User</span>
+                                <i class="bi bi-person-plus quick-action-icon" style="color: var(--medium-blue);"></i>
+                                <span class="fw-medium d-block" style="color: var(--medium-blue);">Add User</span>
                             </a>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <a href="{{ route('admin.reports') }}" class="action-btn success d-block h-100">
-                                <i class="bi bi-graph-up quick-action-icon" style="color: #429EBD;"></i>
-                                <span class="fw-medium d-block" style="color: var(--navy);">Generate Reports</span>
+                                <i class="bi bi-graph-up quick-action-icon" style="color: var(--medium-blue);"></i>
+                                <span class="fw-medium d-block" style="color: var(--text-primary);">Generate Reports</span>
                             </a>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <a href="{{ route('admin.settings') }}" class="action-btn info d-block h-100">
-                                <i class="bi bi-gear quick-action-icon" style="color: #429EBD;"></i>
-                                <span class="fw-medium d-block" style="color: var(--navy);">System Settings</span>
+                                <i class="bi bi-gear quick-action-icon" style="color: var(--medium-blue);"></i>
+                                <span class="fw-medium d-block" style="color: var(--text-primary);">System Settings</span>
                             </a>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <a href="{{ route('admin.logs') }}" class="action-btn warning d-block h-100">
-                                <i class="bi bi-journal-text quick-action-icon" style="color: #F7AD19;"></i>
-                                <span class="fw-medium d-block" style="color: var(--navy);">Activity Logs</span>
+                                <i class="bi bi-journal-text quick-action-icon" style="color: var(--yellow);"></i>
+                                <span class="fw-medium d-block" style="color: var(--text-primary);">Activity Logs</span>
                             </a>
                         </div>
                     </div>
@@ -478,197 +464,208 @@
 
 @section('scripts')
 <script>
-    // Monthly Chart
-    const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
-    new Chart(monthlyCtx, {
+    (function() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const tickColor = isDark ? '#CAF0F8' : '#053F5C';
+        const gridColor = isDark ? 'rgba(0, 180, 216, 0.18)' : 'rgba(66, 158, 189, 0.3)';
+        const donutBorder = isDark ? 'rgba(0, 119, 182, 0.6)' : '#fff';
+        const legendColor = isDark ? '#90E0EF' : '#64748B';
+        const blue = isDark ? ['rgba(0, 119, 182, 0.7)', 'rgba(0, 119, 182, 1)'] : ['rgba(66, 158, 189, 0.7)', 'rgba(66, 158, 189, 1)'];
+        const cyan = isDark ? ['rgba(0, 180, 216, 0.7)', 'rgba(0, 180, 216, 1)'] : ['rgba(159, 231, 245, 0.7)', 'rgba(159, 231, 245, 1)'];
+        const orange = isDark ? ['rgba(0, 180, 216, 0.7)', 'rgba(0, 180, 216, 1)'] : ['rgba(242, 127, 12, 0.7)', 'rgba(242, 127, 12, 1)'];
+
+        // Monthly Chart
+        const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+        new Chart(monthlyCtx, {
         type: 'bar',
         data: {
-            labels: @json($monthlyLabels),
-            datasets: [{
-                label: 'Appointments',
-                data: @json($monthlyData),
-                backgroundColor: 'rgba(66, 158, 189, 0.7)',
-                borderColor: 'rgba(66, 158, 189, 1)',
-                borderWidth: 1,
-                borderRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false }
+                labels: @json($monthlyLabels),
+                datasets: [{
+                    label: 'Appointments',
+                    data: @json($monthlyData),
+                    backgroundColor: blue[0],
+                    borderColor: blue[1],
+                    borderWidth: 1,
+                    borderRadius: 6
+                }]
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { stepSize: 1, color: '#053F5C' },
-                    grid: { color: '#429EBD' }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
                 },
-                x: {
-                    ticks: { color: '#053F5C' },
-                    grid: { display: false }
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, color: tickColor },
+                        grid: { color: gridColor }
+                    },
+                    x: {
+                        ticks: { color: tickColor },
+                        grid: { display: false }
+                    }
                 }
             }
-        }
-    });
+        });
 
-    // Status Chart
-    const statusCtx = document.getElementById('statusChart').getContext('2d');
-    new Chart(statusCtx, {
+        // Status Chart
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        new Chart(statusCtx, {
         type: 'doughnut',
         data: {
-            labels: @json($statusLabels),
-            datasets: [{
-                data: @json($statusData),
-                backgroundColor: @json($statusColors),
-                borderWidth: 2,
-                borderColor: '#fff'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        padding: 20,
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                        color: '#64748B',
-                        font: { size: 12 }
-                    }
-                }
+                labels: @json($statusLabels),
+                datasets: [{
+                    data: @json($statusData),
+                    backgroundColor: @json($statusColors),
+                    borderWidth: 2,
+                    borderColor: donutBorder
+                }]
             },
-            cutout: '65%'
-        }
-    });
-
-    // Appointment Volume by School Chart
-    const schoolCtx = document.getElementById('schoolChart').getContext('2d');
-    new Chart(schoolCtx, {
-        type: 'bar',
-        data: {
-            labels: @json($schoolLabels),
-            datasets: [{
-                label: 'Appointments',
-                data: @json(array_values($schoolData)),
-                backgroundColor: 'rgba(247, 173, 25, 0.7)',
-                borderColor: 'rgba(247, 173, 25, 1)',
-                borderWidth: 1,
-                borderRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return context.raw + ' appointment' + (context.raw !== 1 ? 's' : '');
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            color: legendColor,
+                            font: { size: 12 }
                         }
                     }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { stepSize: 1, color: '#053F5C' },
-                    grid: { color: '#429EBD' }
                 },
-                x: {
-                    ticks: { color: '#053F5C' },
-                    grid: { display: false }
-                }
+                cutout: '65%'
             }
-        }
-    });
+        });
 
-    // Age Range Distribution Chart
-    const ageCtx = document.getElementById('ageChart').getContext('2d');
-    new Chart(ageCtx, {
+        // Appointment Volume by School Chart
+        const schoolCtx = document.getElementById('schoolChart').getContext('2d');
+        new Chart(schoolCtx, {
         type: 'bar',
         data: {
-            labels: @json($ageRangeLabels),
-            datasets: [{
-                label: 'Students',
-                data: @json($ageRangeData),
-                backgroundColor: 'rgba(66, 158, 189, 0.7)',
-                borderColor: 'rgba(66, 158, 189, 1)',
-                borderWidth: 1,
-                borderRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return context.raw + ' student' + (context.raw !== 1 ? 's' : '');
+                labels: @json($schoolLabels),
+                datasets: [{
+                    label: 'Appointments',
+                    data: @json(array_values($schoolData)),
+                    backgroundColor: orange[0],
+                    borderColor: orange[1],
+                    borderWidth: 1,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.raw + ' appointment' + (context.raw !== 1 ? 's' : '');
+                            }
                         }
                     }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { stepSize: 1, color: '#053F5C' },
-                    grid: { color: '#429EBD' }
                 },
-                x: {
-                    ticks: { color: '#053F5C' },
-                    grid: { display: false }
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, color: tickColor },
+                        grid: { color: gridColor }
+                    },
+                    x: {
+                        ticks: { color: tickColor },
+                        grid: { display: false }
+                    }
                 }
             }
-        }
-    });
+        });
 
-    // Gender Distribution Chart
-    const genderCtx = document.getElementById('genderChart').getContext('2d');
-    new Chart(genderCtx, {
+        // Age Range Distribution Chart
+        const ageCtx = document.getElementById('ageChart').getContext('2d');
+        new Chart(ageCtx, {
         type: 'bar',
         data: {
-            labels: @json($genderLabels),
-            datasets: [{
-                label: 'Students',
-                data: @json($genderData),
-                backgroundColor: ['rgba(66, 158, 189, 0.7)', 'rgba(159, 231, 245, 0.7)', 'rgba(242, 127, 12, 0.7)'],
-                borderColor: ['rgba(66, 158, 189, 1)', 'rgba(159, 231, 245, 1)', 'rgba(242, 127, 12, 1)'],
-                borderWidth: 1,
-                borderRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return context.raw + ' student' + (context.raw !== 1 ? 's' : '');
+                labels: @json($ageRangeLabels),
+                datasets: [{
+                    label: 'Students',
+                    data: @json($ageRangeData),
+                    backgroundColor: blue[0],
+                    borderColor: blue[1],
+                    borderWidth: 1,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.raw + ' student' + (context.raw !== 1 ? 's' : '');
+                            }
                         }
                     }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { stepSize: 1, color: '#053F5C' },
-                    grid: { color: '#429EBD' }
                 },
-                x: {
-                    ticks: { color: '#053F5C' },
-                    grid: { display: false }
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, color: tickColor },
+                        grid: { color: gridColor }
+                    },
+                    x: {
+                        ticks: { color: tickColor },
+                        grid: { display: false }
+                    }
                 }
             }
-        }
-    });
+        });
+
+        // Gender Distribution Chart
+        const genderCtx = document.getElementById('genderChart').getContext('2d');
+        new Chart(genderCtx, {
+        type: 'bar',
+        data: {
+                labels: @json($genderLabels),
+                datasets: [{
+                    label: 'Students',
+                    data: @json($genderData),
+                    backgroundColor: [blue[0], cyan[0], orange[0]],
+                    borderColor: [blue[1], cyan[1], orange[1]],
+                    borderWidth: 1,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.raw + ' student' + (context.raw !== 1 ? 's' : '');
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, color: tickColor },
+                        grid: { color: gridColor }
+                    },
+                    x: {
+                        ticks: { color: tickColor },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    })();
 </script>
 @endsection

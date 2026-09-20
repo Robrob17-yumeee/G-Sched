@@ -1,138 +1,138 @@
-<aside id="sidebar" class="sidebar" style="width: 260px; flex-shrink: 0;">
+<aside id="sidebar" class="sidebar">
     <nav class="px-3 py-3">
         <ul class="nav flex-column gap-1">
             @if(auth()->user()->isStudent())
                 <li class="nav-item">
-                    <span class="text-uppercase small text-muted px-3 py-2" style="letter-spacing: 0.05em; font-size: 0.7rem; color: var(--navy);">STUDENT</span>
+                    <span class="sidebar-label text-uppercase small text-muted px-3 py-2" style="letter-spacing: 0.05em; font-size: 0.7rem; color: var(--navy);">STUDENT</span>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('student.dashboard') ? 'active' : '' }}" href="{{ route('student.dashboard') }}">
-                        <i class="bi bi-speedometer2 me-2 fs-5"></i>Dashboard
+                        <i class="bi bi-speedometer2 me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('student.schedules*') ? 'active' : '' }}" href="{{ route('student.schedules') }}">
-                        <i class="bi bi-calendar-week me-2 fs-5"></i>Available Schedules
+                        <i class="bi bi-calendar-week me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Available Schedules</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('student.appointments*') ? 'active' : '' }}" href="{{ route('student.appointments.index') }}">
-                        <i class="bi bi-calendar-check me-2 fs-5"></i>My Appointments
+                        <i class="bi bi-calendar-check me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">My Appointments</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('student.notifications*') ? 'active' : '' }}" href="{{ route('student.notifications') }}">
-                        <i class="bi bi-bell me-2 fs-5"></i>Notifications
+                        <i class="bi bi-bell me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Notifications</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('student.feedback*') ? 'active' : '' }}" href="{{ route('student.feedback.index') }}">
-                        <i class="bi bi-chat-text me-2 fs-5"></i>Feedback
+                        <i class="bi bi-chat-text me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Feedback</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}" href="{{ route('profile') }}">
-                        <i class="bi bi-person me-2 fs-5"></i>Profile
+                        <i class="bi bi-person me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Profile</span>
                     </a>
                 </li>
 
             @elseif(auth()->user()->isGuidanceAssociate())
                 <li class="nav-item">
-                    <span class="text-uppercase small text-muted px-3 py-2" style="letter-spacing: 0.05em; font-size: 0.7rem; color: var(--navy);">GUIDANCE ASSOCIATE</span>
+                    <span class="sidebar-label text-uppercase small text-muted px-3 py-2" style="letter-spacing: 0.05em; font-size: 0.7rem; color: var(--navy);">GUIDANCE ASSOCIATE</span>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('guidance.dashboard') ? 'active' : '' }}" href="{{ route('guidance.dashboard') }}">
-                        <i class="bi bi-speedometer2 me-2 fs-5"></i>Dashboard
+                        <i class="bi bi-speedometer2 me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('guidance.requests*') ? 'active' : '' }}" href="{{ route('guidance.requests') }}">
-                        <i class="bi bi-inbox me-2 fs-5"></i>Appointment Requests
+                        <i class="bi bi-inbox me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Appointment Requests</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('guidance.appointments*') ? 'active' : '' }}" href="{{ route('guidance.appointments') }}">
-                        <i class="bi bi-calendar-check me-2 fs-5"></i>Appointments
+                        <i class="bi bi-calendar-check me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Appointments</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('guidance.availability*') ? 'active' : '' }}" href="{{ route('guidance.availability') }}">
-                        <i class="bi bi-calendar-plus me-2 fs-5"></i>Manage Availability
+                        <i class="bi bi-calendar-plus me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Manage Availability</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('guidance.calendar*') ? 'active' : '' }}" href="{{ route('guidance.calendar') }}">
-                        <i class="bi bi-calendar3 me-2 fs-5"></i>Calendar
+                        <i class="bi bi-calendar3 me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Calendar</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('guidance.history*') ? 'active' : '' }}" href="{{ route('guidance.history') }}">
-                        <i class="bi bi-clock-history me-2 fs-5"></i>Appointment History
+                        <i class="bi bi-clock-history me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Appointment History</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('guidance.notifications*') ? 'active' : '' }}" href="{{ route('guidance.notifications') }}">
-                        <i class="bi bi-bell me-2 fs-5"></i>Notifications
+                        <i class="bi bi-bell me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Notifications</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}" href="{{ route('profile') }}">
-                        <i class="bi bi-person me-2 fs-5"></i>Profile
+                        <i class="bi bi-person me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Profile</span>
                     </a>
                 </li>
 
             @elseif(auth()->user()->isAdmin())
                 <li class="nav-item">
-                    <span class="text-uppercase small text-muted px-3 py-2" style="letter-spacing: 0.05em; font-size: 0.7rem; color: var(--navy);">ADMINISTRATOR</span>
+                    <span class="sidebar-label text-uppercase small text-muted px-3 py-2" style="letter-spacing: 0.05em; font-size: 0.7rem; color: var(--navy);">ADMINISTRATOR</span>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
-                        <i class="bi bi-speedometer2 me-2 fs-5"></i>Dashboard
+                        <i class="bi bi-speedometer2 me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
-                        <i class="bi bi-people me-2 fs-5"></i>User Management
+                        <i class="bi bi-people me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">User Management</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.appointments*') ? 'active' : '' }}" href="{{ route('admin.appointments') }}">
-                        <i class="bi bi-calendar-check me-2 fs-5"></i>All Appointments
+                        <i class="bi bi-calendar-check me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">All Appointments</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.schedules*') ? 'active' : '' }}" href="{{ route('admin.schedules') }}">
-                        <i class="bi bi-calendar-week me-2 fs-5"></i>Schedules
+                        <i class="bi bi-calendar-week me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Schedules</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.availability*') ? 'active' : '' }}" href="{{ route('admin.availability') }}">
-                        <i class="bi bi-calendar-plus me-2 fs-5"></i>Availability
+                        <i class="bi bi-calendar-plus me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Availability</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.reports*') ? 'active' : '' }}" href="{{ route('admin.reports') }}">
-                        <i class="bi bi-graph-up me-2 fs-5"></i>Reports
+                        <i class="bi bi-graph-up me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Reports</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.logs*') ? 'active' : '' }}" href="{{ route('admin.logs') }}">
-                        <i class="bi bi-journal-text me-2 fs-5"></i>Activity Logs
+                        <i class="bi bi-journal-text me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Activity Logs</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.notifications*') ? 'active' : '' }}" href="{{ route('admin.notifications') }}">
-                        <i class="bi bi-bell me-2 fs-5"></i>Notifications
+                        <i class="bi bi-bell me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Notifications</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.settings*') ? 'active' : '' }}" href="{{ route('admin.settings') }}">
-                        <i class="bi bi-gear me-2 fs-5"></i>System Settings
+                        <i class="bi bi-gear me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">System Settings</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}" href="{{ route('profile') }}">
-                        <i class="bi bi-person me-2 fs-5"></i>Profile
+                        <i class="bi bi-person me-2 fs-5 sidebar-icon"></i><span class="sidebar-text">Profile</span>
                     </a>
                 </li>
             @endif

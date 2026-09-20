@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', ' - Guidance Associate Report')
 
@@ -32,7 +32,7 @@
                                 <td>{{ $ga->email }}</td>
                                 <td>{{ $ga->phone ?: '-' }}</td>
                                 <td>{{ $ga->guidance_appointments_count }}</td>
-                                <td><span class="badge" style="background: {{ $ga->status === 'active' ? '#9FE7F5' : '#64748B' }}; color: #053F5C;">{{ ucfirst($ga->status) }}</span></td>
+                                <td><span class="badge" style="background: {{ $ga->status === 'active' ? '#9FE7F5' : '#64748B' }}; color: var(--badge-text-light);">{{ ucfirst($ga->status) }}</span></td>
                                 <td>{{ $ga->created_at->format('M d, Y') }}</td>
                             </tr>
                         @endforeach

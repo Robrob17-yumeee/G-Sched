@@ -1,21 +1,7 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('styles')
 <style>
-    :root {
-        --navy: #053F5C;
-        --medium-blue: #429EBD;
-        --light-blue: #9FE7F5;
-        --yellow: #F7AD19;
-        --orange: #F27F0C;
-        --bg-light: #F7FAFC;
-        --card-bg: #FFFFFF;
-        --text-primary: #053F5C;
-        --text-muted: #64748B;
-        --border-color: #E2E8F0;
-        --border-color-light: #F1F5F9;
-    }
-    
     body {
         background-color: var(--bg-light);
         font-family: 'Inter', 'Roboto', sans-serif;
@@ -109,10 +95,10 @@
         justify-content: center;
     }
     
-    .kpi-icon.pending { background: rgba(247, 173, 25, 0.2); color: #F7AD19; }
-    .kpi-icon.today { background: rgba(66, 158, 189, 0.2); color: #429EBD; }
-    .kpi-icon.completed { background: rgba(159, 231, 245, 0.25); color: #429EBD; }
-    .kpi-icon.slots { background: rgba(159, 231, 245, 0.2); color: #429EBD; }
+    .kpi-icon.pending { background: rgba(247, 173, 25, 0.2); color: var(--yellow); }
+    .kpi-icon.today { background: rgba(66, 158, 189, 0.2); color: var(--medium-blue); }
+    .kpi-icon.completed { background: rgba(159, 231, 245, 0.25); color: var(--medium-blue); }
+    .kpi-icon.slots { background: rgba(159, 231, 245, 0.2); color: var(--medium-blue); }
     
     .status-badge {
         padding: 0.375rem 0.875rem;
@@ -125,12 +111,12 @@
     
     .status-badge.approved {
         background: var(--medium-blue);
-        color: var(--navy);
+        color: var(--text-primary);
     }
     
     .status-badge.pending {
         background: rgba(247, 173, 25, 0.15);
-        color: var(--navy);
+        color: var(--text-primary);
     }
     
     .btn-outline-custom {
@@ -144,7 +130,7 @@
     
     .btn-outline-custom:hover {
         background: var(--medium-blue);
-        color: #FFFFFF;
+        color: var(--badge-text-light);
     }
     
     .notification-item {
@@ -181,7 +167,7 @@
     
     .notification-badge {
         background: var(--orange);
-        color: var(--navy);
+        color: var(--text-primary);
         font-size: 0.7rem;
         font-weight: 700;
         border-radius: 9999px;
@@ -193,7 +179,7 @@
         background: #FFFFFF;
         border: 1px solid var(--border-color);
         border-radius: 0.75rem;
-        color: #429EBD;
+        color: var(--medium-blue);
         padding: 1rem 0.875rem;
         text-decoration: none;
         transition: all 0.2s ease;
@@ -202,18 +188,18 @@
     .action-btn.primary-inverted:hover {
         border-color: var(--medium-blue);
         background: rgba(66, 158, 189, 0.05);
-        color: #429EBD;
+        color: var(--medium-blue);
     }
     .action-btn.primary-inverted i {
-        color: #429EBD;
+        color: var(--medium-blue);
     }
 
     .action-btn.primary,
     .btn-primary-action {
-        background: #429EBD;
+        background: var(--medium-blue);
         border: none;
         border-radius: 0.75rem;
-        color: #FFFFFF;
+        color: var(--badge-text-light);
         padding: 1rem 0.875rem;
         text-decoration: none;
         transition: all 0.2s ease;
@@ -229,7 +215,7 @@
     }
     .action-btn.primary i,
     .btn-primary-action i {
-        color: #FFFFFF;
+        color: var(--badge-text-light);
     }
 
     .action-btn {
@@ -266,7 +252,7 @@
     }
     
     .action-btn.secondary:hover {
-        border-color: var(--navy);
+        border-color: var(--text-primary);
         background: rgba(5, 63, 92, 0.05);
     }
     
@@ -309,7 +295,7 @@
                     <div class="d-flex justify-content-between align-items-center h-100">
                         <div>
                             <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Pending Requests</p>
-                            <h2 class="kpi-count mb-0" style="color: var(--navy);">{{ $pendingRequests->count() }}</h2>
+                            <h2 class="kpi-count mb-0" style="color: var(--text-primary);">{{ $pendingRequests->count() }}</h2>
                         </div>
                         <div class="kpi-icon pending">
                             <i class="bi bi-hourglass-split fs-4"></i>
@@ -325,7 +311,7 @@
                     <div class="d-flex justify-content-between align-items-center h-100">
                         <div>
                             <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Today's Appointments</p>
-                            <h2 class="kpi-count mb-0" style="color: var(--navy);">{{ $todaysAppointments->count() }}</h2>
+                            <h2 class="kpi-count mb-0" style="color: var(--text-primary);">{{ $todaysAppointments->count() }}</h2>
                         </div>
                         <div class="kpi-icon today">
                             <i class="bi bi-calendar-day-fill fs-4"></i>
@@ -341,7 +327,7 @@
                     <div class="d-flex justify-content-between align-items-center h-100">
                         <div>
                             <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Completed Sessions</p>
-                            <h2 class="kpi-count mb-0" style="color: var(--navy);">{{ $completedCount }}</h2>
+                            <h2 class="kpi-count mb-0" style="color: var(--text-primary);">{{ $completedCount }}</h2>
                         </div>
                         <div class="kpi-icon completed">
                             <i class="bi bi-check-circle-fill fs-4"></i>
@@ -357,7 +343,7 @@
                     <div class="d-flex justify-content-between align-items-center h-100">
                         <div>
                             <p class="text-muted mb-1 text-uppercase small" style="letter-spacing: 0.05em;">Available Slots</p>
-                            <h2 class="kpi-count mb-0" style="color: var(--navy);">{{ $availableSlots }}</h2>
+                            <h2 class="kpi-count mb-0" style="color: var(--text-primary);">{{ $availableSlots }}</h2>
                         </div>
                         <div class="kpi-icon slots">
                             <i class="bi bi-calendar-plus-fill fs-4"></i>
@@ -372,7 +358,7 @@
             <!-- Pending Requests Card -->
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                    <h5 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                         <i class="bi bi-inbox me-2" style="color: var(--yellow);"></i>Pending Requests
                     </h5>
                     <a href="{{ route('guidance.requests') }}" class="btn btn-sm" style="color: var(--medium-blue); font-weight: 500; padding: 0.375rem 0.75rem;">
@@ -405,7 +391,7 @@
             <!-- Today's Appointments Card -->
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                    <h5 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                         <i class="bi bi-calendar-day me-2" style="color: var(--medium-blue);"></i>Today's Appointments
                     </h5>
                     <a href="{{ route('guidance.appointments') }}" class="btn btn-sm" style="color: var(--medium-blue); font-weight: 500; padding: 0.375rem 0.75rem;">
@@ -437,7 +423,7 @@
             <!-- Upcoming Appointments Card -->
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                    <h5 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                         <i class="bi bi-calendar-event me-2" style="color: var(--medium-blue);"></i>Upcoming Appointments
                     </h5>
                     <a href="{{ route('guidance.appointments') }}" class="btn btn-sm" style="color: var(--medium-blue); font-weight: 500; padding: 0.375rem 0.75rem;">
@@ -466,50 +452,13 @@
                     @endif
                 </div>
             </div>
-            
-            <!-- Recent Notifications Card -->
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
-                        <i class="bi bi-bell me-2" style="color: var(--orange);"></i>Recent Notifications
-                    </h5>
-                </div>
-                <div class="card-body p-0">
-                    @if($notifications->count() > 0)
-                        @foreach($notifications as $notification)
-                            <a href="{{ route('guidance.notifications') }}" class="notification-item d-flex gap-3 text-decoration-none {{ !$notification->is_read ? 'fw-bold' : '' }}" style="{{ !$notification->is_read ? 'background: rgba(242, 127, 12, 0.08);' : '' }}">
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <h6 class="notification-title mb-1">{{ $notification->title }}</h6>
-                                        <small class="notification-time">{{ $notification->created_at->diffForHumans() }}</small>
-                                    </div>
-                                    <p class="notification-message mb-0">{{ $notification->message }}</p>
-                                </div>
-                                @if(!$notification->is_read)
-                                    <span class="notification-badge align-self-start">New</span>
-                                @endif
-                            </a>
-                        @endforeach
-                        <div class="text-center p-3 border-top" style="border-color: var(--border-color-light);">
-            <a href="{{ route('guidance.notifications') }}" class="btn btn-sm" style="color: var(--medium-blue); font-weight: 500; padding: 0.375rem 0.75rem;">
-                View All <i class="bi bi-chevron-right ms-1"></i>
-            </a>
-                        </div>
-                    @else
-                        <div class="text-center py-5">
-                            <i class="bi bi-bell-slash fs-1" style="color: var(--text-muted); opacity: 0.5;"></i>
-                            <p class="text-muted mt-3">No notifications</p>
-                        </div>
-                    @endif
-                </div>
-            </div>
         </div>
-        
+
         <div class="col-12 col-lg-5">
             <!-- Quick Actions Card -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0" style="color: var(--navy); font-weight: 600;">
+                    <h5 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
                         <i class="bi bi-lightning me-2" style="color: var(--yellow);"></i>Quick Actions
                     </h5>
                 </div>
@@ -517,26 +466,26 @@
                     <div class="row g-3">
                         <div class="col-12 col-sm-6">
                             <a href="{{ route('guidance.requests') }}" class="action-btn warning d-block h-100">
-                                <i class="bi bi-inbox quick-action-icon" style="color: #F7AD19;"></i>
-                                <span class="fw-medium d-block" style="color: var(--navy);">Pending Requests</span>
+                                <i class="bi bi-inbox quick-action-icon" style="color: var(--yellow);"></i>
+                                <span class="fw-medium d-block" style="color: var(--text-primary);">Pending Requests</span>
                             </a>
                         </div>
                         <div class="col-12 col-sm-6">
                             <a href="{{ route('guidance.availability') }}" class="action-btn primary-inverted d-block h-100">
-                                <i class="bi bi-calendar-plus quick-action-icon" style="color: #429EBD;"></i>
-                                <span class="fw-medium d-block" style="color: #429EBD;">Manage Availability</span>
+                                <i class="bi bi-calendar-plus quick-action-icon" style="color: var(--medium-blue);"></i>
+                                <span class="fw-medium d-block" style="color: var(--medium-blue);">Manage Availability</span>
                             </a>
                         </div>
                         <div class="col-12 col-sm-6">
                             <a href="{{ route('guidance.calendar') }}" class="action-btn info d-block h-100">
-                                <i class="bi bi-calendar3 quick-action-icon" style="color: #429EBD;"></i>
-                                <span class="fw-medium d-block" style="color: var(--navy);">Calendar View</span>
+                                <i class="bi bi-calendar3 quick-action-icon" style="color: var(--medium-blue);"></i>
+                                <span class="fw-medium d-block" style="color: var(--text-primary);">Manage Availability</span>
                             </a>
                         </div>
                         <div class="col-12 col-sm-6">
                             <a href="{{ route('guidance.history') }}" class="action-btn secondary d-block h-100">
-                                <i class="bi bi-clock-history quick-action-icon" style="color: #053F5C;"></i>
-                                <span class="fw-medium d-block" style="color: var(--navy);">History</span>
+                                <i class="bi bi-clock-history quick-action-icon" style="color: var(--badge-text-light);"></i>
+                                <span class="fw-medium d-block" style="color: var(--text-primary);">History</span>
                             </a>
                         </div>
                     </div>

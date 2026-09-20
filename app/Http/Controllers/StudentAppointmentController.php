@@ -126,10 +126,10 @@ class StudentAppointmentController extends Controller
             'start_time' => 'required',
             'end_time' => 'required',
             'purpose' => 'required|string|max:1000',
-            'severity' => 'required|in:low,medium,high',
+            'concern_category' => 'required|string|max:100',
         ]);
 
-        $severity = $request->input('severity', 'low');
+        $severity = $request->input('severity', 'not_assessed');
 
         $availability = Availability::with('guidanceAssociate')->findOrFail($request->availability_id);
 
@@ -214,6 +214,7 @@ class StudentAppointmentController extends Controller
                     'start_time' => $request->start_time,
                     'end_time' => $request->end_time,
                     'purpose' => $request->purpose,
+                    'concern_category' => $request->concern_category,
                     'severity' => $severity,
                 ]);
 

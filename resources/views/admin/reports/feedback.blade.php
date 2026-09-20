@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', ' - Feedback Report')
 
@@ -14,7 +14,7 @@
     <div class="col-md-4">
         <div class="card shadow-sm text-center">
             <div class="card-body">
-                <h2 class="mb-0" style="color: #F7AD19;">{{ number_format($avgRating, 2) }}</h2>
+                <h2 class="mb-0" style="color: var(--yellow);">{{ number_format($avgRating, 2) }}</h2>
                 <p class="text-muted mb-0">Average Rating</p>
             </div>
         </div>
@@ -91,10 +91,10 @@
                                     <td>
                                         @if($fb->rating)
                                             @for($i = 1; $i <= 5; $i++)
-                                                <i class="bi bi-star{{ $i <= $fb->rating ? '-fill' : ''}}" style="{{ $i <= $fb->rating ? 'color: #F7AD19;' : 'color: var(--navy); opacity: 0.4;' }}"></i>
+                                                <i class="bi bi-star{{ $i <= $fb->rating ? '-fill' : ''}}" style="{{ $i <= $fb->rating ? 'color: var(--yellow);' : 'color: var(--text-primary); opacity: 0.4;' }}"></i>
                                             @endfor
                                         @else
-                                            <span class="badge" style="background: #429EBD; color: var(--navy);">SQD Response</span>
+                                            <span class="badge" style="background: var(--medium-blue); color: var(--text-primary);">SQD Response</span>
                                         @endif
                                     </td>
                                     <td>
@@ -139,29 +139,34 @@
     const ratingLabels = ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'];
     const ratingData = @json($ratingDistribution);
 
-    const ctx = document.getElementById('ratingChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ratingLabels,
-            datasets: [{
-                label: 'Count',
-                data: ratingData,
-                backgroundColor: ['#F27F0C', '#F7AD19', '#429EBD', '#9FE7F5', '#053F5C'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false }
+    (function() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const bgColors = isDark ? ['#90E0EF', '#00B4D8', '#0077B6', '#00B4D8', '#03045E'] : ['#F27F0C', '#F7AD19', '#429EBD', '#9FE7F5', '#053F5C'];
+        const ctx = document.getElementById('ratingChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ratingLabels,
+                datasets: [{
+                    label: 'Count',
+                    data: ratingData,
+                    backgroundColor: bgColors,
+                    borderWidth: 0
+                }]
             },
-            scales: {
-                x: { beginAtZero: true, ticks: { stepSize: 1 } }
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { beginAtZero: true, ticks: { stepSize: 1, color: isDark ? '#90E0EF' : '#64748B' } },
+                    y: { ticks: { color: isDark ? '#90E0EF' : '#64748B' } }
+                }
             }
-        }
-    });
+        });
+    })();
 </script>
 @endsection

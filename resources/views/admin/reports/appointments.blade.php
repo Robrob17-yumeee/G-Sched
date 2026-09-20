@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', ' - Appointment Report')
 
@@ -87,7 +87,7 @@
                                 <td>{{ $appointment->formatted_date }}</td>
                                 <td>{{ $appointment->formatted_time }}</td>
                                 <td>{{ Str::limit($appointment->purpose, 50) }}</td>
-                                <td><span class="badge" style="background: {{ $appointment->status->color ?? '#64748B' }}; color: #053F5C;">{{ $appointment->status->label }}</span></td>
+                                <td><span class="badge" style="background: {{ $appointment->status->color ?? '#64748B' }}; color: var(--badge-text-light);">{{ $appointment->status->label }}</span></td>
                                 <td>{{ $appointment->created_at->format('M d, Y') }}</td>
                             </tr>
                         @endforeach
