@@ -35,7 +35,14 @@ class GuidanceAppointmentController extends Controller
         
         $appointment->load(['student', 'status', 'rescheduleRequests']);
         
-        return view('guidance.requests.show', compact('appointment'));
+        $activityLogs = ActivityLog::where('module', 'Appointments')
+            ->where('description', 'LIKE', '%' . $appointment->id . '%')
+            ->orderBy('created_at', 'asc')
+            ->orderBy('id', 'asc')
+            ->take(50)
+            ->get();
+        
+        return view('guidance.requests.show', compact('appointment', 'activityLogs'));
     }
 
     public function approve(Appointment $appointment)
@@ -240,6 +247,7 @@ class GuidanceAppointmentController extends Controller
         
         $request->validate([
             'severity' => 'required|in:not_assessed,low,moderate,high',
+            'notes' => 'nullable|string|max:2000',
         ]);
 
         DB::transaction(function () use ($appointment, $request) {
@@ -248,6 +256,7 @@ class GuidanceAppointmentController extends Controller
             
             $appointment->update([
                 'severity' => $newSeverity,
+                'notes' => $request->notes,
             ]);
 
             ActivityLog::log('ASSIGN_SEVERITY', "Updated severity for appointment #{$appointment->id} from " . ($oldSeverity ?: 'not_assessed') . " to {$newSeverity}", 'Appointments', Auth::id());

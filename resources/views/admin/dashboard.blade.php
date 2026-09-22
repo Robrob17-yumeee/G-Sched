@@ -206,6 +206,19 @@
 @endsection
 
 @section('content')
+<div class="d-none d-md-block mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="h2 mb-1" style="color: var(--text-primary); font-weight: 700;">Admin Dashboard</h1>
+            <p class="text-muted mb-0">Overview of users, appointments, and system statistics</p>
+        </div>
+    </div>
+</div>
+<div class="d-md-none mb-3">
+    <h1 class="h4 mb-1" style="color: var(--text-primary); font-weight: 700;">Admin Dashboard</h1>
+    <p class="text-muted mb-0 small">Users and system statistics</p>
+</div>
+
 <div class="row g-3">
         <!-- KPI Summary Cards - User Stats -->
         <div class="col-12 col-md-6 col-lg-3">

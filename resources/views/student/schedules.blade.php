@@ -840,18 +840,12 @@
     @endif
 </div>
 
-<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-label="Book Appointment" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="max-width: 600px; margin: 0 auto; border-radius: 0.25rem;">
-            <div class="modal-header" style="background: #0077b6; color: #FFFFFF; border-radius: 0.25rem 0.25rem 0 0; padding: 0.75rem 1.25rem;">
-                <h5 class="modal-title mb-0" id="bookingModalLabel">
-                    <i class="bi bi-calendar-plus me-2"></i>Book Appointment
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+        <div class="modal-content" style="border-radius: 0.5rem;">
             <form method="POST" action="{{ route('student.appointments.store') }}" id="bookingForm">
                 @csrf
-                <div class="modal-body" style="padding: 0.75rem 1rem;">
+                <div class="modal-body" style="padding: 1rem;">
                     <input type="hidden" name="availability_id" id="modal_availability_id">
                     <input type="hidden" name="appointment_date" id="modal_appointment_date">
                     <input type="hidden" name="start_time" id="modal_start_time">
@@ -881,9 +875,9 @@
                         </select>
                     </div>
 
-                    <div class="mb-1" id="concern_category_wrapper" style="display: none;">
+                    <div class="mb-1" id="concern_category_wrapper" style="overflow: visible;">
                         <label for="modal_concern_category" class="form-label small">Concern / Category <span class="text-danger">*</span></label>
-                        <select class="form-select form-select-sm" id="modal_concern_category" name="concern_category">
+                        <select class="form-select form-select-sm" id="modal_concern_category" name="concern_category" required>
                             <option value="">Select a concern</option>
                             <option value="Academic Concerns">Academic Concerns</option>
                             <option value="Personal Concerns">Personal Concerns</option>
@@ -1226,28 +1220,18 @@
             document.getElementById('modal_availability_id').value = '';
             document.getElementById('modal_start_time').value = '';
             document.getElementById('modal_end_time').value = '';
-            document.getElementById('concern_category_wrapper').style.display = 'none';
-            document.getElementById('modal_concern_category').value = '';
-            document.getElementById('modal_concern_category').required = false;
         });
 
         document.getElementById('modal_time_slot').addEventListener('change', function() {
             const selected = this.value;
-            const concernWrapper = document.getElementById('concern_category_wrapper');
-            const concernSelect = document.getElementById('modal_concern_category');
             if (selected) {
                 const parts = selected.split('|');
                 document.getElementById('modal_availability_id').value = parts[0];
                 document.getElementById('modal_start_time').value = parts[1];
                 document.getElementById('modal_end_time').value = parts[2];
                 selectedSlot = parts;
-                concernWrapper.style.display = 'block';
-                concernSelect.required = true;
             } else {
                 selectedSlot = null;
-                concernWrapper.style.display = 'none';
-                concernSelect.required = false;
-                concernSelect.value = '';
             }
         });
 
@@ -1272,6 +1256,8 @@
             document.getElementById('modal_time_slot').innerHTML = '<option value="">Select a time slot</option>';
             const timeSlotSelect = document.getElementById('modal_time_slot');
             if (timeSlotSelect) timeSlotSelect.classList.remove('is-invalid');
+            const concernSelect = document.getElementById('modal_concern_category');
+            if (concernSelect) concernSelect.classList.remove('is-invalid');
         });
 
         // Initialize calendar
