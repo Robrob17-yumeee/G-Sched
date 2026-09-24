@@ -449,10 +449,47 @@
             }
         }
 
+        /* Login page: full-screen, no scroll */
+        body.login-page {
+            margin-top: 0 !important;
+            padding-bottom: 0 !important;
+            overflow: hidden;
+            height: 100vh;
+            min-height: 100vh;
+        }
+
+        body.login-page .main-content {
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: 0 !important;
+            height: 100vh;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        body.login-page .login-split {
+            height: 100vh;
+            min-height: 100vh;
+            max-height: 100vh;
+            overflow: hidden;
+        }
+
         @media (min-width: 768px) {
             body {
                 margin-top: 76px;
                 padding-bottom: 0;
+            }
+        }
+
+        .main-content {
+            padding-top: 1.5rem;
+        }
+
+        @media (max-width: 767.98px) {
+            .main-content {
+                padding-top: 1rem;
             }
         }
 
@@ -518,7 +555,7 @@
         }
     </style>
 </head>
-    <body {{ auth()->check() ? 'class="has-sidebar"' : '' }}>
+    <body class="{{ auth()->check() ? 'has-sidebar ' : '' }}{{ $bodyClass ?? '' }}">
     @if(!@isset($hide_navbar) || !$hide_navbar)
         @include('layouts.navbar')
     @endif

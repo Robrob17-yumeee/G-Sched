@@ -153,6 +153,44 @@
         border: 1px solid var(--border-color-light);
     }
 
+    .student-identity {
+        align-items: center;
+        display: inline-flex;
+        gap: 0.5rem;
+    }
+
+    .student-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+    }
+
+    .student-id {
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .student-department {
+        background: rgba(66, 158, 189, 0.1);
+        border: 1px solid rgba(66, 158, 189, 0.25);
+        border-radius: 9999px;
+        color: var(--medium-blue);
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.25rem 0.65rem;
+        white-space: nowrap;
+    }
+
+    .submitted-info {
+        align-items: center;
+        color: var(--text-muted);
+        display: flex;
+        font-size: 0.8rem;
+        gap: 0.4rem;
+        white-space: nowrap;
+    }
+
     .summary-section:last-child {
         margin-bottom: 0;
     }
@@ -279,10 +317,25 @@
 <div class="content-wrapper">
     <!-- Student / Request Summary Card -->
     <div class="card mb-4">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <h5 class="mb-0" style="color: var(--text-primary); font-weight: 600;">
-                <i class="bi bi-person me-2" style="color: var(--medium-blue);"></i>Student &amp; Request Summary
+                <div class="student-identity">
+                    <i class="bi bi-person" style="color: var(--medium-blue);"></i>
+                    <div class="student-details">
+                        <span>{{ $appointment->isHighSeverity() ? 'Confidential Student' : $appointment->student->full_name }}</span>
+                        @unless($appointment->isHighSeverity())
+                            <span class="student-id">ID: {{ $appointment->student->student_id ?: 'N/A' }}</span>
+                        @endunless
+                    </div>
+                    @unless($appointment->isHighSeverity())
+                        <span class="student-department">{{ $appointment->student->school ?: 'N/A' }}</span>
+                    @endunless
+                </div>
             </h5>
+            <div class="submitted-info">
+                <i class="bi bi-clock"></i>
+                <span>Submitted: {{ $appointment->created_at->format('F d, Y g:i A') }}</span>
+            </div>
         </div>
         <div class="card-body">
             @if($appointment->isHighSeverity())
@@ -300,20 +353,14 @@
                                 <div class="summary-section">
                                     <h6 class="text-uppercase small" style="color: var(--text-muted); letter-spacing: 0.05em; font-weight: 600;">Student Information</h6>
                                     <dl class="row">
-                                        <dt class="col-5">Name</dt>
-                                        <dd class="col-7">{{ $appointment->student->full_name }}</dd>
-
-                                        <dt class="col-5">Student ID</dt>
-                                        <dd class="col-7">{{ $appointment->student->student_id ?: 'N/A' }}</dd>
-
                                         <dt class="col-5">Email</dt>
                                         <dd class="col-7">{{ $appointment->student->email }}</dd>
 
                                         <dt class="col-5">Phone</dt>
                                         <dd class="col-7">{{ $appointment->student->phone ?: 'Not provided' }}</dd>
 
-                                        <dt class="col-5">Department</dt>
-                                        <dd class="col-7">{{ $appointment->student->school ?: 'N/A' }}</dd>
+                                        <dt class="col-5">Past Visits</dt>
+                                        <dd class="col-7">{{ $pastVisitCount }} Session(s)</dd>
                                     </dl>
                                 </div>
                             </div>
@@ -330,15 +377,6 @@
 
                                         <dt class="col-5">Time</dt>
                                         <dd class="col-7">{{ $appointment->formatted_time }}</dd>
-
-                                        <dt class="col-5">Purpose</dt>
-                                        <dd class="col-7">{{ $appointment->purpose }}</dd>
-
-                                        <dt class="col-5">Concern Category</dt>
-                                        <dd class="col-7">{{ $appointment->concern_category ?: 'Not specified' }}</dd>
-
-                                        <dt class="col-5">Submitted</dt>
-                                        <dd class="col-7">{{ $appointment->created_at->format('F d, Y g:i A') }}</dd>
 
                                         <dt class="col-5">Assigned To</dt>
                                         <dd class="col-7">{{ $appointment->guidanceAssociate->full_name ?? 'Not yet assigned' }}</dd>

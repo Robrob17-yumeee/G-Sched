@@ -102,35 +102,14 @@
             </div>
         </div>
 
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white">
-                <h5 class="mb-0"><i class="bi bi-lightning me-2"></i>Actions</h5>
-            </div>
-            <div class="card-body">
-                <div class="d-grid gap-2">
-                    @if($appointment->isApproved())
-                        <form method="POST" action="{{ route('guidance.requests.complete', $appointment) }}" class="d-inline">
-                            @csrf
-                            <button type="submit" class="btn btn-primary" onclick="return confirm('Mark this appointment as completed? Student will be notified to provide feedback.')">
-                                <i class="bi bi-check2-circle me-2"></i>Mark Completed
-                            </button>
-                        </form>
-                    @endif
-
-                    @if($appointment->isCompleted())
-                        <div class="alert alert-success">
-                            <i class="bi bi-check-circle me-2"></i>
-                            Appointment completed. Student can now submit feedback.
-                        </div>
-                        @if(!$appointment->feedback)
-                            <a href="{{ route('student.feedback.create', $appointment) }}" class="btn btn-outline-info" target="_blank">
-                                <i class="bi bi-star me-2"></i>View Feedback Form
-                            </a>
-                        @endif
-                    @endif
-                </div>
-            </div>
-        </div>
+        @if($appointment->isApproved())
+            <form method="POST" action="{{ route('guidance.requests.complete', $appointment) }}">
+                @csrf
+                <button type="submit" class="btn btn-primary w-100" onclick="return confirm('Mark this appointment as completed? Student will be notified to provide feedback.')">
+                    <i class="bi bi-check2-circle me-2"></i>Mark Completed
+                </button>
+            </form>
+        @endif
     </div>
 </div>
 @endsection

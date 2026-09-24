@@ -41,8 +41,22 @@ class GuidanceAppointmentController extends Controller
             ->orderBy('id', 'asc')
             ->take(50)
             ->get();
+
+        $completedStatus = AppointmentStatus::where('name', 'completed')->first();
+        $pastVisitQuery = $completedStatus
+            ? Appointment::where('student_id', $appointment->student_id)
+                ->where('appointment_status_id', $completedStatus->id)
+                ->where('id', '!=', $appointment->id)
+                ->whereNotNull('completed_at')
+            : null;
+
+        if ($pastVisitQuery && $appointment->completed_at) {
+            $pastVisitQuery->where('completed_at', '<', $appointment->completed_at);
+        }
+
+        $pastVisitCount = $pastVisitQuery ? $pastVisitQuery->count() : 0;
         
-        return view('guidance.requests.show', compact('appointment', 'activityLogs'));
+        return view('guidance.requests.show', compact('appointment', 'activityLogs', 'pastVisitCount'));
     }
 
     public function approve(Appointment $appointment)
